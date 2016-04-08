@@ -32,9 +32,24 @@ for n=1:(length(time_ind)-1);
         time_interp(k)=time_interp(k-1)+time_increase;
     end
 end
+
+%plot of the x data incudling gravity
 figure(1)
-plot(time_interp,x,'.')
+plot(time_interp,x,'.','MarkerSize',14)
+ylabel('x (g''s)')
+xlabel('time (sec)')
+title('x accel data including gravity')
+
+%plot of the y data incudling gravity
 figure(2)
-plot(time_interp,y,'.')
+plot(time_interp,y,'.','MarkerSize',14)
+ylabel('y (g''s)')
+xlabel('time (sec)')
+title('y accel data including gravity')
+
+%plot of the y data incudling gravity
 figure(3)
-plot(time_interp,z,'.')
+plot(time_interp,z,'.','MarkerSize',14)
+ylabel('z (g''s)')
+xlabel('time (sec)')
+title('z accel data including gravity')
