@@ -14,21 +14,16 @@ z(not_accel,:)=[];
 
 %shift time date and temp to be in line with accel
 time=datetime_raw; %get rid of this before larger data sets
-% temp=temp_raw;
-% date=date_raw;
+temp=temp_raw;
 recoded_times=find(~isnat(time));
 for n=2:length(recoded_times);
-    %shift time
+    %shift date time
     time(recoded_times(n)-1)=time(recoded_times(n));
     time(recoded_times(n))=[];
     
-%     %shift date
-%     date(recoded_times(n)-1)=date(recoded_times(n));
-%     date(recoded_times(n))=[];
-%     
-%     %shift temp
-%     temp(recoded_times(n)-1)=temp(recoded_times(n));
-%     temp(recoded_times(n))=[];
+    %shift temp
+    temp(recoded_times(n)-1)=temp(recoded_times(n));
+    temp(recoded_times(n))=[];
 end
 
 %refind recorded times with new indecies
