@@ -84,7 +84,7 @@ for col=[1,2,3,6]
     end
 end
 
-dateFormats = {'MM/dd/yyyy', 'HH:mm:ss'};
+dateFormats = {'MMdd-yyyy', 'HH:mm:ss'};
 dateFormatIndex = 1;
 blankDates = cell(1,size(raw,2));
 anyBlankDates = false(size(raw,1),1);

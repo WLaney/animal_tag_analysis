@@ -1,5 +1,5 @@
-[x_raw,y_raw,z_raw,date_raw,time_raw,temp_raw] = ...
-    import_animal_tag_data('DATA.TXT',1, 803);
+[x_raw,y_raw,z_raw,datetime_raw,temp_raw] = ...
+    import_animal_tag_data_v2('import_test_data_v2.TXT',1, 1490);
 %import data (NOT NESSARY, get rid of this when haveing two arrys with all
 %the accel data becomes a problem with larger data sets
 x=x_raw;
@@ -13,22 +13,22 @@ y(not_accel,:)=[];
 z(not_accel,:)=[];
 
 %shift time date and temp to be in line with accel
-time=time_raw; %get rid of this before larger data sets
-temp=temp_raw;
-date=date_raw;
+time=datetime_raw; %get rid of this before larger data sets
+% temp=temp_raw;
+% date=date_raw;
 recoded_times=find(~isnat(time));
 for n=2:length(recoded_times);
     %shift time
     time(recoded_times(n)-1)=time(recoded_times(n));
     time(recoded_times(n))=[];
     
-    %shift date
-    date(recoded_times(n)-1)=date(recoded_times(n));
-    date(recoded_times(n))=[];
-    
-    %shift temp
-    temp(recoded_times(n)-1)=temp(recoded_times(n));
-    temp(recoded_times(n))=[];
+%     %shift date
+%     date(recoded_times(n)-1)=date(recoded_times(n));
+%     date(recoded_times(n))=[];
+%     
+%     %shift temp
+%     temp(recoded_times(n)-1)=temp(recoded_times(n));
+%     temp(recoded_times(n))=[];
 end
 
 %refind recorded times with new indecies
