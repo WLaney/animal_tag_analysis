@@ -39,23 +39,65 @@ for n=1:(length(time_ind)-1);
     end
 end
 
-%plot of the x data incudling gravity
-figure(1)
+% %plot of the x data incudling gravity
+% figure(1)
+% plot(time_interp,x,'.','MarkerSize',14)
+% ylabel('x (g''s)')
+% xlabel('time (hh:mm:ss)')
+% title('x accel data including gravity')
+% 
+% %plot of the y data incudling gravity
+% figure(2)
+% plot(time_interp,y,'.','MarkerSize',14)
+% ylabel('y (g''s)')
+% xlabel('time (hh:mm:ss)')
+% title('y accel data including gravity')
+% 
+% %plot of the z data incudling gravity
+% figure(3)
+% plot(time_interp,z,'.','MarkerSize',14)
+% ylabel('z (g''s)')
+% xlabel('time (hh:mm:ss)')
+% title('z accel data including gravity')
+
+%implemtent a high pass Butterworth filter to remove gravitional data and
+%isolate linear acceration
+
+fc=0.25; %frequency cut off
+fo=4; %filter order
+
+%applie butter filter and output transfer function coffiecents
+[b,a]=butter(fo,fc,'high');
+x_bf=filter(b,a,x(2:end));
+y_bf=filter(b,a,y(2:end));
+z_bf=filter(b,a,z(2:end));
+
+%plot of the x data befor and after bf
+figure(4)
 plot(time_interp,x,'.','MarkerSize',14)
+hold on
+plot(time_interp(2:end),x_bf,'.','MarkerSize',14)
 ylabel('x (g''s)')
-xlabel('time (sec)')
-title('x accel data including gravity')
+xlabel('time (hh:mm:ss)')
+title('x accel data before and after Butterworth filter')
+legend('before filter','after filter')
 
-%plot of the y data incudling gravity
-figure(2)
+%plot of the y data befor and after bf
+figure(5)
 plot(time_interp,y,'.','MarkerSize',14)
+hold on
+plot(time_interp(2:end),y_bf,'.','MarkerSize',14)
 ylabel('y (g''s)')
-xlabel('time (sec)')
-title('y accel data including gravity')
+xlabel('time (hh:mm:ss)')
+title('y accel data before and after Butterworth filter')
+legend('before filter','after filter')
 
-%plot of the y data incudling gravity
-figure(3)
+%plot of the z data befor and after bf
+figure(6)
 plot(time_interp,z,'.','MarkerSize',14)
+hold on
+plot(time_interp(2:end),z_bf,'.','MarkerSize',14)
 ylabel('z (g''s)')
-xlabel('time (sec)')
-title('z accel data including gravity')
+xlabel('time (hh:mm:ss)')
+title('z accel data before and after Butterworth filter')
+legend('before filter','after filter')
