@@ -1,5 +1,5 @@
 [x,y,z,datetime,temp] = ...
-    import_animal_tag_data_v2('import_test_data_v2.TXT',1, 1490);
+    import_animal_tag_data_v2('yxz_test.TXT',1, 206);
 
 %shift time date and temp to be in line with accel
 recoded_times=find(~isnat(datetime));
@@ -70,29 +70,32 @@ z_bf=filter(b,a,z);
 
 %plot of the x data befor and after bf
 figure(4)
-plot(datetime,x,'.','MarkerSize',14)
+subplot(3,1,1) %comment if you want this plot on its own
+plot(datetime,x,'-','MarkerSize',14)
 hold on
-plot(datetime,x_bf,'.','MarkerSize',14)
+plot(datetime,x_bf,'-','MarkerSize',14)
 ylabel('x (g''s)')
 xlabel('time (hh:mm:ss)')
 title('x accel data before and after Butterworth filter')
 legend('before filter','after filter')
 
 %plot of the y data befor and after bf
-figure(5)
-plot(datetime,y,'.','MarkerSize',14)
+%figure(5) %uncomment this and comment nl if you want this plot on its own
+subplot(3,1,2)
+plot(datetime,y,'-','MarkerSize',14)
 hold on
-plot(datetime,y_bf,'.','MarkerSize',14)
+plot(datetime,y_bf,'-','MarkerSize',14)
 ylabel('y (g''s)')
 xlabel('time (hh:mm:ss)')
 title('y accel data before and after Butterworth filter')
 legend('before filter','after filter')
 
 %plot of the z data befor and after bf
-figure(6)
-plot(datetime,z,'.','MarkerSize',14)
+%figure(6) %uncomment this and comment nl if you want this plot on its own
+subplot(3,1,3)
+plot(datetime,z,'-','MarkerSize',14)
 hold on
-plot(datetime,z_bf,'.','MarkerSize',14)
+plot(datetime,z_bf,'-','MarkerSize',14)
 ylabel('z (g''s)')
 xlabel('time (hh:mm:ss)')
 title('z accel data before and after Butterworth filter')
