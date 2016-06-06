@@ -155,7 +155,7 @@ x_shark=zeros(data_length,1);
 y_shark=zeros(data_length,1);
 z_shark=zeros(data_length,1);
 
-phi=atan(ygrav./xgrav); %rotational angles
+phi=atan(ygrav./xgrav); %rotational angles IS THIS RIGHT?!?!?!?!
 theta=(pi/2)-atan(zgrav./xgrav);
 
 for i=1:data_length %think of a more clever/ less computaonal intesive way to do this
