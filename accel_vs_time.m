@@ -50,25 +50,25 @@ y_gyro(not_accel,:)=[];
 z_gyro(not_accel,:)=[];
 
 
-% %% Inital Plots
-% 
-% % %plot of the x data incudling gravity
-% % figure(1)
-% % plot(time_interp,x,'.','MarkerSize',14)
-% % ylabel('x (g''s)')
-% % xlabel('time (hh:mm:ss)')
-% % title('x accel data including gravity')
-% % 
-% % %plot of the y data incudling gravity
-% % figure(2)
-% % plot(time_interp,y,'.','MarkerSize',14)
-% % ylabel('y (g''s)')
-% % xlabel('time (hh:mm:ss)')
-% % title('y accel data including gravity')
-% % 
-% % %plot of the z data incudling gravity
-% % figure(3)
-% % plot(time_interp,z,'.','MarkerSize',14)
-% % ylabel('z (g''s)')
-% % xlabel('time (hh:mm:ss)')
-% % title('z accel data including gravity')
+%% Inital Plots
+
+%plot of the x data incudling gravity
+figure(1)
+plot(date_time,x_accel,'.','MarkerSize',14)
+ylabel('x (g''s)')
+xlabel('time (HH:mm:ss)')
+title('x accel data including gravity')
+
+%plot of the y data incudling gravity
+figure(2)
+plot(date_time,y_accel,'.','MarkerSize',14)
+ylabel('y (g''s)')
+xlabel('time (HH:mm:ss)')
+title('y accel data including gravity')
+
+%plot of the z data incudling gravity
+figure(3)
+plot(date_time,z_accel,'.','MarkerSize',14)
+ylabel('z (g''s)')
+xlabel('time (HH:mm:ss)')
+title('z accel data including gravity')
