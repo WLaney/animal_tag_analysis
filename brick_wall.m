@@ -1,4 +1,4 @@
-function filtered = brick_wall( data, date_time, sampeling_rate)
+function filtered = brick_wall( data, date_time, sampling_rate)
 %input data and sampling rate in Hz, returns data filtered with a high pass
 %brick wall filter
 
@@ -11,7 +11,7 @@ function filtered = brick_wall( data, date_time, sampeling_rate)
 l=length(data);
 ftz=fft(data); %preform foward DFT
 abs_fty=abs(ftz); %find absolute value
-spectrum_freq=fourier_frequencies(sampeling_rate, l); %find freq
+spectrum_freq=fourier_frequencies(sampling_rate, l); %find freq
 % [~,order]=sort(spectrum_freq); %put in order bc negative freqs
 % figure (2)
 % plot(spectrum_freq(order),abs_fty(order)) %plot of dft
@@ -26,7 +26,7 @@ max1=spectrum_freq(max1p); %find the first max freq
 re=1e-10; %correct for round off error
 G1=ones(l,1);
 G1(abs(spectrum_freq) < max1+re, 1)=0;
-abs_fty_filter=abs(ftz.*G1);
+%abs_fty_filter=abs(ftz.*G1);
 filtered=ifft((ftz.*G1));
 % figure (3)
 % plot(spectrum_freq(order),abs_fty_filter(order))

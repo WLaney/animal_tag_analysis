@@ -55,8 +55,8 @@ for n=1:(length(time_ind)-1);
 end
 
 %% Finalize Variables
-gx = sdata(1,:);
-gy = sdata(2,:);
+gy = sdata(1,:); % intentional - fixes misalignment of gyroscope
+gx = sdata(2,:);
 gz = sdata(3,:);
 ax = sdata(4,:);
 ay = sdata(5,:);
