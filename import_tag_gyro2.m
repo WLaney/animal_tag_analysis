@@ -1,9 +1,9 @@
-function [ax,ay,az,gx,gy,gz,dt,temp,pressure] = import_tag_gyro2()
+function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
 %Import tag data from the gyroscope, interpolating time.
 %   Done mainly to get more familiar with MATLAB.
-fp = fopen('data_w_gyro.txt');
+fp = fopen(filename);
 if fp == -1
-    error(['Could not open ' 'data_w_gyro.txt']);
+    error(['Could not open ' filename]);
 end
 
 TAB = sprintf('\t');
@@ -12,7 +12,7 @@ TAB = sprintf('\t');
 sdata = []; % gx gy gz ax ay az
 % Initial time data
 tline = fgetl(fp);
-dt = [datetime(tline(7:end), 'InputFormat', 'y-M-d H:m:s')];
+date_time = [datetime(tline(7:end), 'InputFormat', 'y-M-d H:m:s')];
 temp = [0];
 pressure = [0];
 while true
@@ -23,7 +23,7 @@ while true
        tabi = strfind(line, TAB);
        
        date_string = line(1:(tabi-1));
-       dt(end) = datetime(date_string, 'InputFormat', 'y-M-d H:m:s');
+       date_time(end) = datetime(date_string, 'InputFormat', 'y-M-d H:m:s');
        
        data_string = line((tabi+1):end);
        data = sscanf(data_string, '%f'); % TODO add in pressure
@@ -32,7 +32,7 @@ while true
    else
        sdata = [sdata sscanf(tline, '%f %f %f %f %f %f')];
        if (size(sdata,2) ~= 1)
-           dt = [dt NaT];
+           date_time = [date_time NaT];
            temp = [temp temp(end)];
            pressure = [pressure pressure(end)];
        end
@@ -42,3 +42,22 @@ end
 fclose(fp);
 
 %% Datetime interpolation
+% Stolen from William
+time_ind=find(~isnat(date_time));
+for n=1:(length(time_ind)-1);
+    time_diff=date_time(time_ind(n+1))-date_time(time_ind(n)); %diff between recorded times
+    num_of_point=time_ind(n+1)-time_ind(n); %number of points that need to be interp
+    time_increase=time_diff/num_of_point; %step size of interp
+    %fill in the blank times
+    for k =time_ind(n)+1:time_ind(n+1)
+        date_time(k)=date_time(k-1)+time_increase;
+    end
+end
+
+%% Finalize Variables
+gx = sdata(1,:);
+gy = sdata(2,:);
+gz = sdata(3,:);
+ax = sdata(4,:);
+ay = sdata(5,:);
+az = sdata(6,:);
