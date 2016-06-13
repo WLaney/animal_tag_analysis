@@ -65,7 +65,8 @@ class Model:
 
 	def get_gyroscope(self):
 		"""Get the current gyroscope readout (with noise)."""
-		return random.gauss(self.get_angular_velocity(), self._gyro_noise)
+		gyro = self.get_angular_velocity()
+		return [random.gauss(g, self._gyro_noise) for g in gyro]
 
 	def get_acceleration(self):
 		"""Get the current acceleration due to gravity as (x,y,z)."""
@@ -74,7 +75,8 @@ class Model:
 
 	def get_accelerometer(self):
 		"""Get the current accelerometer readout (with noise)."""
-		return random.gauss(self.get_acceleration(), self._accel_noise)
+		accel = self.get_acceleration()
+		return [random.gauss(a, self._accel_noise) for a in accel]
 
 	"""
 	Rotational values stolen from a SIGGRAPH educational site.
@@ -111,10 +113,12 @@ class Model:
 		x, y = x*cyw - y*syw , x*syw + y*cyw
 		return [x, y, z]
 
-	def __str__(self):
-		"""Print out the current state as [accel], [gyro], [real angle]."""
-		print("%10.8f %10.8f %10.8f" % self.get_accelerometer(),
-			  "%10.8f %10.8f %10.8f" % self.get_gyroscope(),
-			  "%10.8f %10.8f %10.8f" % self.get_angle()
-			  )
+	def get_readouts(self) -> str:
+		"""Return gyroscope and accelerometer data, tab-sep."""
+		return "%13.8f %13.8f %13.8f" % (*self.get_gyroscope(),) + "\t" + \
+		       "%13.8f %13.8f %13.8f" % (*self.get_accelerometer(),) 
 
+	def get_actual(self) -> str:
+		"""Return angular velocity and acceleration, tab-sep."""
+		return "%13.8f %13.8f %13.8f" % (*self.get_angular_velocity(),) + "\t" + \
+		       "%13.8f %13.8f %13.8f" % (*self.get_acceleration(),) 
