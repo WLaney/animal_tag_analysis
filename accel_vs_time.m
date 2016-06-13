@@ -1,7 +1,7 @@
 [x,y,z,date_time,temp] = ...
     import_animal_tag_data_v2('yxz_test.TXT',1, 206);
 
-%% Interpolatoin and data arangment
+%% Interpolation and data arrangement
 %shift time date and temp to be in line with accel
 recoded_times=find(~isnat(date_time));
 for n=2:length(recoded_times);
@@ -107,7 +107,7 @@ z_bf=filter(b,a,z);
 % legend('before filter','after filter')
 
 %% Brick Wall filter
-sampling_rate=8;
+sampling_rate=12;
 x_brick=brick_wall(x, date_time,sampling_rate);
 y_brick=brick_wall(y, date_time,sampling_rate);
 z_brick=brick_wall(z, date_time,sampling_rate);

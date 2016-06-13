@@ -3,9 +3,9 @@
 
 %% Get pitch and yaw from both sensors
 % Accelerometer - filter+trig
-ax_f = ax;
-ay_f = ay;
-az_f = az;
+ax_f = brick_wall(ax', date_time', 12)';
+ay_f = brick_wall(ay', date_time', 12)';
+az_f = brick_wall(az', date_time', 12)';
 a_pitch = atan(ay_f ./ sqrt(ax_f .^ 2 + az_f .^ 2));
 a_roll  = atan(-ax_f ./ az_f);
 
