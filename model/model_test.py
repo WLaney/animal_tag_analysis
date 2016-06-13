@@ -13,7 +13,7 @@ class TestStringMethods(unittest.TestCase):
 	def assertListAlmostEqual(self, first, second):
 		self.assertEqual(len(first), len(second))
 		for f, s in zip(first, second):
-			self.assertAlmostEqual(f, s)
+			self.assertAlmostEqual(f, s, msg="%s vs. %s" % (first, second))
 
 	def setUp(self):
 		self.model = model.Model(0.1, 0.1)
@@ -24,12 +24,21 @@ class TestStringMethods(unittest.TestCase):
 	def test_new(self):
 		self.assertListAlmostEqual(self.model.get_angular_velocity(), ZERO)
 		self.assertListAlmostEqual(self.model.get_angle(), ZERO)
-		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 0.0, -9.8])
+		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 0.0, 1.0])
 
 	def test_rotate(self):
 		"""Flip the tag over and see if the perceived gravity vector has reversed."""
 		self.model.set_angle(0.0, 180.0, 0.0)
-		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 0.0, 9.8])
+		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 0.0, -1.0])
+		# yaw should not change the gravitational vector
+		self.model.set_angle(0.0, 180.0, 90.0)
+		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 0.0, -1.0])
+		# pitch 90 degrees counterclockwise - gravity is y
+		self.model.set_angle(90.0, 0.0, 0.0)
+		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, 1.0, 0.0])
+		# reverse
+		self.model.set_angle(270.0, 0.0, 0.0)
+		self.assertListAlmostEqual(self.model.get_acceleration(), [0.0, -1.0, 0.0])
 
 	def test_animate(self):
 		self.model.set_angular_velocity(90.0, 45.0, 0.0)

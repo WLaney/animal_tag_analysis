@@ -2,15 +2,11 @@
 """model.py - Models a tag with accelerometer and gyroscope.
 
 This is a script to simulate a gravity-affected "tag" and the readouts
-from its accelerometers (measuring acceleration) and gyroscopes 
-(measuring angular velocity). It allows you to move and rotate the 
-object in real time, getting its 'real' acceleration and angular 
-velocity (with and without gravity) as well as accelerometer
-and gyroscope readouts (with controllable added noise).
+from its 3-axis accelerometer and gyroscope.
 
-The tag starts out in an "initial orientation" of [0.0, 0.0, 0.0]
-(Euler angles) and is at rest such that whatever it's resting
-on is pushing up against gravity (I'm not the best physicist).
+The tag starts at an initial orientation of [0.0, 0.0, 0.0] such that
+gravity is along the z axis. As such, starting acceleration is
+[0.0, 0.0, 1.0], since the device is resting and not in freefall.
 
 Acceleration is measured in m/sec^2. Angular velocity is measured
 in degrees per second. For this project, a left-hand coordinate
@@ -22,11 +18,13 @@ system is used with this model:
 *----> x (pitch)
  \
   > y (roll)
+  
+Positive angles correspond with CLOCKWISE rotations.
 """
 import math
 import random
 
-GRAVITY = 9.8 
+GRAVITY = 1.0
 
 class Model:
 	
@@ -71,34 +69,46 @@ class Model:
 
 	def get_acceleration(self):
 		"""Get the current acceleration due to gravity as (x,y,z)."""
-		g_angle = [0.0, 90.0, 0.0]
-		g_angle = [g - a for g, a in zip(g_angle, self.get_angular_velocity())]
-		g_vec = self._angle_to_vector(*g_angle)
-		return [g * GRAVITY for g in g_vec]
+		ang = [-a for a in self.get_angle()]
+		return self._get_gravity_vector(*ang)
 
 	def get_accelerometer(self):
 		"""Get the current accelerometer readout (with noise)."""
 		return random.gauss(self.get_acceleration(), self._accel_noise)
 
-	def _angle_to_vector(self, p, r, y):
-		"""Return a normalized (x,y,z) vector from an angle.
-		
-		Each angle is in degrees.
-		"""
+	"""
+	Rotational values stolen from a SIGGRAPH educational site.
+	The coordinates had to be swapped around, though.
+
+	X-Axis Rotation
+	y' = y*cos q - z*sin q
+	z' = y*sin q + z*cos q 
+
+	Y-Axis Rotation
+	z' = z*cos q - x*sin q
+	x' = z*sin q + x*cos q
+
+	Z-Axis
+	x' = x*cos q - y*sin q
+	y' = x*sin q + y*cos q
+	"""
+
+	def _get_gravity_vector(self, p, r, yw):
+		"""Return a vector representing the force of gravity."""
 		p = math.radians(p)
 		r = math.radians(r)
-		y = math.radians(y)
+		yw = math.radians(yw)
 		# Create a vector and rotate it around each axis
-		x, y, z = [1.0, 0.0, 0.0]
-		# Z axis
-		cyaw, syaw = math.cos(y), math.sin(y)
-		x, y = x*cyaw - y*syaw , x*syaw - y*cyaw
-		# Y axis
+		x, y, z = [0.0, 0.0, GRAVITY]
+		# x (pitch)
 		cp, sp = math.cos(p), math.sin(p)
-		y, z = y*cp - z*sp , y*sp - z*cp
-		# X axis
+		y, z = y*cp - z*sp , y*sp + z*cp
+		# y (roll)
 		cr, sr = math.cos(r), math.sin(r)
-		x, z = z*sr + x*cr , z*cr - x*sr
+		z, x = z*cr - x*sr , z*sr + x*cr
+		# z (yaw)
+		cyw, syw = math.cos(yw), math.sin(yw)
+		x, y = x*cyw - y*syw , x*syw + y*cyw
 		return [x, y, z]
 
 	def __str__(self):
