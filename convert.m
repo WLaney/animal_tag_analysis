@@ -2,7 +2,7 @@
 fakef = fopen('model/fake.txt', 'r');
 cells = textscan(fakef, '%s %s %f %f %f %f %f %f');
 dts = strcat(cells{1}, '-', cells{2});
-date_time = datetime(dts, 'InputFormat', 'M-d-y-H:m:s');
+date_time = datetime(dts, 'InputFormat', 'M-d-y-H:m:s:SSSSSS');
 
 fake_gyro  = [cells{3:5}];
 fake_accel = [cells{6:8}];

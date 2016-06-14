@@ -8,15 +8,7 @@ FAKEFILE = "fake.txt"
 REALFILE = "real.txt"
 
 events = [
-	( 5, 'set_angle', (90, 0, 0)),
-	(10, 'end', [])
-	#~ ( 0, 'set_angular_velocity', (90, 0, 0)),
-	#~ ( 4, 'set_angular_velocity', (0, 0, 0)),
-	#~ ( 5, 'set_angular_velocity', (0, 90, 0)),
-	#~ ( 9, 'set_angular_velocity', (0, 0, 0)),
-	#~ (10, 'set_angular_velocity', (0, 0, 90)),
-	#~ (14, 'set_angular_velocity', (0, 0, 0)),
-	#~ (15, 'end', [])
+	(120, 'end', [])
 ]
 heapq.heapify(events)
 
@@ -39,7 +31,7 @@ with open(FAKEFILE, 'w') as fakef, \
 			else:
 				raise KeyError("Invalid event: %s" % (cmd,))
 		# print tag data
-		dts = dt.strftime("%m-%d-%Y %H:%M:%S") + "\t"
+		dts = dt.strftime("%m-%d-%Y %H:%M:%S:%f")
 		fakef.write(dts)
 		fakef.write(tag.get_readouts())
 		fakef.write("\n")

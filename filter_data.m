@@ -1,3 +1,7 @@
+%% filter_data.m
+% This sciprt takes raw sensor readouts and tries to convert them into
+% a more physically descriptive format. For now, it tries to guess the
+% pitch and roll of the tag through the accelerometer and gyroscope.
 %% Import Data
 % Real-World Data
 % [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = ...
@@ -16,24 +20,18 @@ gx = fg(1,:);
 gy = fg(2,:);
 gz = fg(3,:);
 
-%% Get pitch and roll5 from both sensors
+%% Get pitch and roll from both sensors
 % Accelerometer
-[b, a] = butter(3, 0.7, 'low');
+[b, a] = butter(3, 0.8, 'low');
 ax_f = filter(b, a, ax);
 ay_f = filter(b, a, ay);
 az_f = filter(b, a, az);
 % Trig
-a_pitch = rad2deg(atan2(sqrt(ay_f.^2 + az_f.^2), -ax_f.^2));
-a_roll = rad2deg(atan2(-az_f, ax_f));
-% If we pitch the tag a certain way, roll becomes irrelevant.
-% But if we roll the tag a certain way, pitch becomes irrelevant.
-% The solution is to limit one angle to -90 to 90 degrees.
-% I arbitrarily chose pitch.
-a_pitch = max(-180, min(180, a_pitch));
-a_roll = max(-90, min(90, a_roll));
+a_pitch = rad2deg(-sqrt(ay_f.^2 + az_f.^2) ./ ax_f.^2);
+a_roll  = rad2deg(atan(ax_f ./ -az_f));
 % Gyroscope
-g_pitch = cumsum(gx, 1);
-g_roll  = cumsum(gy, 1);
+g_pitch = cumsum(gx ./ 12, 2);
+g_roll  = cumsum(gy ./ 12, 2);
 
 %% Plot
 hold on
