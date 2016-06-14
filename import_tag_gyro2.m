@@ -9,7 +9,7 @@ end
 TAB = sprintf('\t');
 
 %% Get Raw Data
-sdata = []; % gx gy gz ax ay az
+sdata = []; % ax ay az gx gy gz
 % Initial time data
 tline = fgetl(fp);
 date_time = [datetime(tline(7:end), 'InputFormat', 'y-M-d H:m:s')];
@@ -55,9 +55,9 @@ for n=1:(length(time_ind)-1);
 end
 
 %% Finalize Variables
-gy = sdata(1,:); % intentional - fixes misalignment of gyroscope
-gx = sdata(2,:);
-gz = sdata(3,:);
-ax = sdata(4,:);
-ay = sdata(5,:);
-az = sdata(6,:);
+ax = sdata(1,:);
+ay = sdata(2,:);
+az = sdata(3,:);
+gy = sdata(4,:); % intentional - fixes misalignment of gyroscope
+gx = sdata(5,:);
+gz = sdata(6,:);

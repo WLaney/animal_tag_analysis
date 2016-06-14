@@ -59,7 +59,7 @@ date_time(1:1)=[];
 % % xlabel('time (hh:mm:ss)')
 % % title('z accel data including gravity')
 
-%% Buuterwoth Filter
+%% Butterworth Filter
 %implemtent a high pass Butterworth filter to remove gravitional data and
 %isolate linear acceration
 
@@ -144,7 +144,7 @@ z_brick=brick_wall(z, date_time,sampling_rate);
 % title('z accel data before and after brick wall filter')
 % legend('before filter','after filter')
 
-%% put cordiantes in shark frame
+%% Put coordinates in shark frame
 xgrav=x-x_brick; %accel due to gravity
 ygrav=y-y_brick;
 zgrav=z-z_brick;
@@ -155,6 +155,10 @@ x_shark=zeros(data_length,1);
 y_shark=zeros(data_length,1);
 z_shark=zeros(data_length,1);
 
+% I'm pretty sure that these only work if the phone is only under
+% the force of gravity. I'm not sure how to work this out, since we
+% can't distinguish between gravity and not-gravity while the phone is
+% rotating (which is the important part).
 phi=atan(ygrav./xgrav); %rotational angles IS THIS RIGHT?!?!?!?!
 theta=(pi/2)-atan(zgrav./xgrav);
 
