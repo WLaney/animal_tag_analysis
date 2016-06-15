@@ -9,14 +9,22 @@ REALFILE = "real.txt"
 ANGLEFILE = "angles.txt"
 
 events = [
-	(300, 'end', [])
+	( 4, 'set_angular_velocity', (   0,  90,   0)),
+	( 5, 'set_angular_velocity', (   0,   0,   0)),
+	( 9, 'set_angular_velocity', (   0,  90,   0)),
+	(10, 'set_angular_velocity', (   0,   0,   0)),
+	(14, 'set_angular_velocity', (   0,  90,   0)),
+	(15, 'set_angular_velocity', (   0,   0,   0)),
+	(19, 'set_angular_velocity', (   0,  90,   0)),
+	(20, 'set_angular_velocity', (   0,   0,   0)),
+	(25, 'end', [])
 ]
 heapq.heapify(events)
 
 with open(FAKEFILE,  'w') as fakef, \
 	 open(REALFILE,  'w') as realf, \
 	 open(ANGLEFILE, 'w') as anglef:
-	tag = model.Model(0.7, 0.2)
+	tag = model.Model(0.0001, 0.00264)
 	dt = datetime.datetime(1990, 1, 1)
 	step = datetime.timedelta(milliseconds=TIMESTEP*1000)
 	time = 0.0

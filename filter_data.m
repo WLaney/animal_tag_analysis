@@ -14,11 +14,10 @@
    import_tag_gyro2('data_w_gyro.txt');
 
 % Simulated data
-% convert;
-% clear;
-% load 'model/sim.mat';
-% fa = fake_accel';
+% [date_time, fake_gyro, fake_accel, real_gyro, real_accel, ~] = ...
+%     convert('model/fake.txt', 'model/real.txt', 'model/angles.txt');
 % fg = fake_gyro';
+% fa = fake_accel';
 % ax = fa(1,:);
 % ay = fa(2,:);
 % az = fa(3,:);
