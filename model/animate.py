@@ -6,15 +6,17 @@ import datetime
 TIMESTEP = 1.0 / 12.0
 FAKEFILE = "fake.txt"
 REALFILE = "real.txt"
+ANGLEFILE = "angles.txt"
 
 events = [
-	(120, 'end', [])
+	(300, 'end', [])
 ]
 heapq.heapify(events)
 
-with open(FAKEFILE, 'w') as fakef, \
-	 open(REALFILE, 'w') as realf:
-	tag = model.Model(0.2, 0.2)
+with open(FAKEFILE,  'w') as fakef, \
+	 open(REALFILE,  'w') as realf, \
+	 open(ANGLEFILE, 'w') as anglef:
+	tag = model.Model(0.7, 0.2)
 	dt = datetime.datetime(1990, 1, 1)
 	step = datetime.timedelta(milliseconds=TIMESTEP*1000)
 	time = 0.0
@@ -39,6 +41,8 @@ with open(FAKEFILE, 'w') as fakef, \
 		realf.write(dts)
 		realf.write(tag.get_actual())
 		realf.write("\n")
+		
+		anglef.write("%5.3f\t%5.3f\t%5.3f\n" % (*tag.get_angle(),))
 		# update ts
 		tag.update(TIMESTEP)
 		dt += step

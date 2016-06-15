@@ -13,7 +13,10 @@ cells = textscan(realf, '%s %s %f %f %f %f %f %f');
 real_gyro  = [cells{3:5}];
 real_accel = [cells{6:8}];
 
+anglef = fopen('model/angles.txt', 'r');
+angles = fscanf(anglef, '%f', [3, Inf]);
+
 fclose(fakef);
 fclose(realf);
 
-save('model/sim.mat', 'date_time', 'fake_*', 'real_*');
+save('model/sim.mat', 'date_time', 'fake_*', 'real_*', 'angles');

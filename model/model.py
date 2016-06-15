@@ -43,9 +43,9 @@ class Model:
 
 	def update(self, timestep):
 		"""Advance this model by timestep seconds."""
-		self._angle[0] += self._angular_velocity[0] * timestep
-		self._angle[1] += self._angular_velocity[1] * timestep
-		self._angle[2] += self._angular_velocity[2] * timestep
+		for i in range(0,len(self._angle)):
+			self._angle[i] += self._angular_velocity[i] * timestep
+			self._angle[i] = (self._angle[i] + 180) % 360 - 180
 
 	def set_angular_velocity(self, p, r, y):
 		"""Set the pitch, roll, and yaw in deg/sec."""
@@ -83,16 +83,16 @@ class Model:
 	The coordinates had to be swapped around, though.
 
 	X-Axis Rotation
-	y' = y*cos q - z*sin q
-	z' = y*sin q + z*cos q 
+	y' = y*cos(p) - z*sin(p)
+	z' = y*sin(p) + z*cos(p)
 
 	Y-Axis Rotation
-	z' = z*cos q - x*sin q
-	x' = z*sin q + x*cos q
-
+	z' = z*cos(r) - x*sin(q)
+	x' = z*sin(r) + x*cos(r)
+	
 	Z-Axis
-	x' = x*cos q - y*sin q
-	y' = x*sin q + y*cos q
+	x' = x*cos(yw) - y*sin(yw)
+	y' = x*sin(yw) + y*cos(yw)
 	"""
 
 	def _get_gravity_vector(self, p, r, yw):
