@@ -13,3 +13,6 @@ run_accelerometer_test('roll180');
 pause
 disp 'Test: roll360'
 run_accelerometer_test('roll360');
+pause
+disp 'Test: yaw360'
+run_accelerometer_test('yaw360');

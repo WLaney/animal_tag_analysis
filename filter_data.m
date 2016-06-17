@@ -41,10 +41,20 @@ g_roll  = mod(cumsum(gy ./ 12, 2) + 180, 360) - 180;
 % A Complementary filter is a lot easier to implement than a Kalman filter
 % (I'll eventually replace it). It's actually a special kind of Kalman
 % filter.
+
+% Normally, the weights between gyroscope and accelerometer would be
+% determined via the Kalman filter's predictions. Here, though, we use
+% the fact that the accelerometer is most likely to be right when its
+% length is 1g (no linear acceleration, probably) and the current
+% g_pitch and g_roll are not out of whack.
+mag = sqrt(ax .^ 2 + ay .^ 2 + az .^ 2);
+weight = 0.05 ./ (abs(mag - 1) + 1);
+weight = weight .* (g_pitch > -90) .* (g_pitch < 90);
+
 comp_pitch = zeros(1,size(a_pitch,2));
 ap = 0;
 for i = 1:size(comp_pitch,2)
-    ap = 0.98 * (ap + gx(i) ./ 12) + 0.02 * a_pitch(i);
+    ap = weight(i) * (ap + gx(i) ./ 12) + (1 - weight(i)) * a_pitch(i);
     comp_pitch(i) = ap;
 end
 

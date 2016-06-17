@@ -9,13 +9,13 @@ REALFILE = "real.txt"
 ANGLEFILE = "angles.txt"
 
 events = [
-	( 4, 'set_angular_velocity', (   0,  90,   0)),
+	( 4, 'set_angular_velocity', (   0,  90,  90)),
 	( 5, 'set_angular_velocity', (   0,   0,   0)),
-	( 9, 'set_angular_velocity', (   0,  90,   0)),
+	( 9, 'set_angular_velocity', (   0,  90,  90)),
 	(10, 'set_angular_velocity', (   0,   0,   0)),
-	(14, 'set_angular_velocity', (   0,  90,   0)),
+	(14, 'set_angular_velocity', (   0,  90,  90)),
 	(15, 'set_angular_velocity', (   0,   0,   0)),
-	(19, 'set_angular_velocity', (   0,  90,   0)),
+	(19, 'set_angular_velocity', (   0,  90,  90)),
 	(20, 'set_angular_velocity', (   0,   0,   0)),
 	(25, 'end', [])
 ]

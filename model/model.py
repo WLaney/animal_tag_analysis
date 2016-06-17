@@ -70,8 +70,7 @@ class Model:
 
 	def get_acceleration(self):
 		"""Get the current acceleration due to gravity as (x,y,z)."""
-		ang = [-a for a in self.get_angle()]
-		return self._get_gravity_vector(*ang)
+		return self._get_gravity_vector(*self.get_angle())
 
 	def get_accelerometer(self):
 		"""Get the current accelerometer readout (with noise)."""
@@ -97,9 +96,9 @@ class Model:
 
 	def _get_gravity_vector(self, p, r, yw):
 		"""Return a vector representing the force of gravity."""
-		p = math.radians(p)
-		r = math.radians(r)
-		yw = math.radians(yw)
+		p  = math.radians(-p)
+		r  = math.radians(-r)
+		yw = math.radians(-yw)
 		# Create a vector and rotate it around each axis
 		x, y, z = [0.0, 0.0, GRAVITY]
 		# x (pitch)
