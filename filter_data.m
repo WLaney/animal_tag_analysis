@@ -13,18 +13,6 @@
 [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = ...
    import_tag_gyro2('data_w_gyro.txt');
 
-% Simulated data
-% [date_time, fake_gyro, fake_accel, real_gyro, real_accel, ~] = ...
-%     convert('model/fake.txt', 'model/real.txt', 'model/angles.txt');
-% fg = fake_gyro';
-% fa = fake_accel';
-% ax = fa(1,:);
-% ay = fa(2,:);
-% az = fa(3,:);
-% gx = fg(1,:);
-% gy = fg(2,:);
-% gz = fg(3,:);
-
 %% Get pitch and roll from both sensors
 % Accelerometer
 [a_pitch, a_roll] = accel_pr(ax, ay, az);

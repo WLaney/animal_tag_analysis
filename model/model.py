@@ -78,38 +78,23 @@ class Model:
 		return [random.gauss(a, self._accel_noise) for a in accel]
 
 	"""
-	Rotational values stolen from a SIGGRAPH educational site.
-	The coordinates had to be swapped around, though.
-
-	X-Axis Rotation
-	y' = y*cos(p) - z*sin(p)
-	z' = y*sin(p) + z*cos(p)
-
-	Y-Axis Rotation
-	z' = z*cos(r) - x*sin(q)
-	x' = z*sin(r) + x*cos(r)
+	Rotation matrix taken from our accelerometer paper. Since our
+	original vector is along the Z axis, Z rotation shouldn't do jack
+	to it, so we can use a simpler model that just takes pitch and
+	roll instead.
 	
-	Z-Axis
-	x' = x*cos(yw) - y*sin(yw)
-	y' = x*sin(yw) + y*cos(yw)
+	(Used eq.11 from "Tilt Sensing Using a Three-Axis Accelerometer")
 	"""
 
 	def _get_gravity_vector(self, p, r, yw):
 		"""Return a vector representing the force of gravity."""
 		p  = math.radians(-p)
 		r  = math.radians(-r)
-		yw = math.radians(-yw)
-		# Create a vector and rotate it around each axis
-		x, y, z = [0.0, 0.0, GRAVITY]
-		# x (pitch)
-		cp, sp = math.cos(p), math.sin(p)
-		y, z = y*cp - z*sp , y*sp + z*cp
-		# y (roll)
-		cr, sr = math.cos(r), math.sin(r)
-		z, x = z*cr - x*sr , z*sr + x*cr
-		# z (yaw)
-		cyw, syw = math.cos(yw), math.sin(yw)
-		x, y = x*cyw - y*syw , x*syw + y*cyw
+		# Rotate a gravity vector (parallel to Z axis)
+		cos_r = math.cos(r)
+		x = -math.sin(p) * cos_r
+		y = math.sin(r)
+		z = math.cos(p) * cos_r
 		return [x, y, z]
 
 	def get_readouts(self) -> str:
