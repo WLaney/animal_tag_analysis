@@ -35,8 +35,8 @@ g_roll  = mod(cumsum(gy ./ 12, 2) + 180, 360) - 180;
 % the fact that the accelerometer is most likely to be right when its
 % length is 1g (no linear acceleration, probably) and the current
 % g_pitch and g_roll are not out of whack.
-mag = sqrt(ax .^ 2 + ay .^ 2 + az .^ 2);
-weight = 0.05 ./ (abs(mag - 1) + 1);
+distance = abs(sqrt(ax .^ 2 + ay .^ 2 + az .^ 2) - 1);
+weight = 0.04 * max(0, 1 - (62.5 * distance) .^ 0.4);
 weight = weight .* (g_pitch > -90) .* (g_pitch < 90);
 
 comp_pitch = zeros(1,size(a_pitch,2));
@@ -54,6 +54,7 @@ for i = 1:size(comp_roll,2)
 end
 
 %% Here's a Bunch of Freaking Graphs
+figure(1);
 % Accel
 subplot(3, 2, 1);
 plot(date_time, [ax;ay;az]);
@@ -85,3 +86,8 @@ ylabel('Deg');
 axis([-inf, inf, -180, 180]);
 legend('Pitch', 'Roll');
 title('P&R with Complementary Filter');
+
+figure(2);
+plot(date_time, [distance; weight]);
+legend('Distance from 1', 'Weight');
+title('Accelerometer Weighing Function');
