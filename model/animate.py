@@ -36,6 +36,8 @@ with open(FAKEFILE,  'w') as fakef, \
 				tag.set_angular_velocity(*args)
 			elif cmd == 'set_angle':
 				tag.set_angle(*args)
+			elif cmd == 'set_linear_accel':
+				tag.set_linear_accel(*args)
 			elif cmd == 'end':
 				break
 			else:
