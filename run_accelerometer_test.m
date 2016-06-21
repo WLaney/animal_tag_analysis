@@ -3,17 +3,11 @@ function [ ] = run_accelerometer_test( testname )
 % the actual angles graphically.
 % testname is the name of a model/tests folder.
 
-test_folder = strcat('model/tests/', testname, '/');
-fake_name   = strcat(test_folder, 'fake.txt');
-real_name   = strcat(test_folder, 'real.txt');
-angles_name = strcat(test_folder, 'angles.txt');
-[date_time, ~, fake_accel, ~, real_accel, angles] = ...
-    convert(fake_name, real_name, angles_name);
+[date_time, ~, fake_accel, ~, real_accel, angles] = import_test(testname);
 
-[af_pitch, af_roll] = accel_pr(fake_accel(:,1), fake_accel(:,2), fake_accel(:,3));
-[ar_pitch, ar_roll] = accel_pr(real_accel(:,1), real_accel(:,2), real_accel(:,3));
+[af_pitch, af_roll] = accel_pr(fake_accel(:,1), fake_accel(:,2), fake_accel(:,3), 12);
+[ar_pitch, ar_roll] = accel_pr(real_accel(:,1), real_accel(:,2), real_accel(:,3), 12);
 
-%% Plotting
 subplot(3, 1, 1);
 hold on
 plot(date_time, fake_accel);

@@ -11,13 +11,9 @@ ANGLEFILE = "angles.txt"
 events = [
 	( 4, 'set_angular_velocity', (  90,   0,   0)),
 	( 5, 'set_angular_velocity', (   0,   0,   0)),
-	( 9, 'set_angular_velocity', (  90,   0,   0)),
-	(10, 'set_angular_velocity', (   0,   0,   0)),
-	(14, 'set_angular_velocity', (  90,   0,   0)),
-	(15, 'set_angular_velocity', (   0,   0,   0)),
-	(19, 'set_angular_velocity', (  90,   0,   0)),
-	(20, 'set_angular_velocity', (   0,   0,   0)),
-	(25, 'end', [])
+	(10, 'set_angular_velocity', (   0,  90,   0)),
+	(14, 'set_angular_velocity', (   0,   0,   0)),
+	(15, 'end', [])
 ]
 heapq.heapify(events)
 
@@ -36,8 +32,8 @@ with open(FAKEFILE,  'w') as fakef, \
 				tag.set_angular_velocity(*args)
 			elif cmd == 'set_angle':
 				tag.set_angle(*args)
-			elif cmd == 'set_linear_accel':
-				tag.set_linear_accel(*args)
+			#~ elif cmd == 'set_linear_accel':
+				#~ tag.set_linear_accel(*args)
 			elif cmd == 'end':
 				break
 			else:

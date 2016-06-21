@@ -1,4 +1,5 @@
-function filtered = brick_wall( data, date_time, sampling_rate)
+% NOTE function signature was (data, date_time, sampling_rate)
+function filtered = brick_wall( data, sampling_rate)
 %input data and sampling rate in Hz, returns data filtered with a high pass
 %brick wall filter
 

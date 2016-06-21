@@ -38,7 +38,7 @@ class Model:
 		"""
 		self._angular_velocity = [0.0, 0.0, 0.0]
 		self._angle = [0.0, 0.0, 0.0]
-		self._linear_accel = [0.0, 0.0, 0.0]
+		#~ self._linear_accel = [0.0, 0.0, 0.0]
 		self._accel_noise = accel_noise
 		self._gyro_noise = gyro_noise
 
@@ -64,21 +64,21 @@ class Model:
 		"""Set the current angle relative to its initial orientation."""
 		self._angle = [p, r, y]
 
-	def get_linear_accel(self):
-		"""Get the current linear acceleration.
+	#~ def get_linear_accel(self):
+		#~ """Get the current linear acceleration.
 		
-		This represents acceleration not due to gravity, and
-		throws off the accelerometer.
-		"""
-		return self._linear_accel
+		#~ This represents acceleration not due to gravity, and
+		#~ throws off the accelerometer.
+		#~ """
+		#~ return self._linear_accel
 
-	def set_linear_accel(self, x, y, z):
-		"""Get the current linear acceleration.
+	#~ def set_linear_accel(self, x, y, z):
+		#~ """Get the current linear acceleration.
 		
-		This represents acceleration not due to gravity, and
-		throws off the accelerometer.
-		"""
-		self._linear_accel = [x, y, z]
+		#~ This represents acceleration not due to gravity, and
+		#~ throws off the accelerometer.
+		#~ """
+		#~ self._linear_accel = [x, y, z]
 
 	def get_gyroscope(self):
 		"""Get the current gyroscope readout (with noise)."""
@@ -88,7 +88,8 @@ class Model:
 	def get_acceleration(self):
 		"""Get the current acceleration due to gravity as (x,y,z)."""
 		g_accel = self._get_gravity_vector(*self.get_angle())
-		return [g+l for g, l in zip(g_accel,self.get_linear_accel())]
+		#~ return [g+l for g, l in zip(g_accel,self.get_linear_accel())]
+		return g_accel
 
 	def get_accelerometer(self):
 		"""Get the current accelerometer readout (with noise)."""
@@ -123,5 +124,5 @@ class Model:
 	def get_actual(self) -> str:
 		"""Return angular velocity and acceleration, tab-sep."""
 		return "%13.8f %13.8f %13.8f" % (*self.get_angular_velocity(),) \
-				+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_acceleration(),) \
-				+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_linear_accel(),) 
+				+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_acceleration(),) #\
+				#+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_linear_accel(),) 

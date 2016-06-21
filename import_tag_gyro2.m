@@ -30,11 +30,11 @@ while true
        temp(end) = data;
        pressure(end) = 0;
    else
-       sdata = [sdata sscanf(tline, '%f %f %f %f %f %f')];
-       if (size(sdata,2) ~= 1)
-           date_time = [date_time NaT];
-           temp = [temp temp(end)];
-           pressure = [pressure pressure(end)];
+       sdata = [sdata; sscanf(tline, '%f %f %f %f %f %f')'];
+       if (size(sdata,1) ~= 1)
+           date_time = [date_time; NaT];
+           temp = [temp; temp(end)];
+           pressure = [pressure; pressure(end)];
        end
    end
 end
@@ -55,9 +55,9 @@ for n=1:(length(time_ind)-1);
 end
 
 %% Finalize Variables
-ax = sdata(1,:);
-ay = sdata(2,:);
-az = sdata(3,:);
-gy = sdata(4,:); % intentional - fixes misalignment of gyroscope
-gx = sdata(5,:);
-gz = sdata(6,:);
+ax = sdata(:,1);
+ay = sdata(:,2);
+az = sdata(:,3);
+gy = sdata(:,4); % intentional - fixes misalignment of gyroscope
+gx = sdata(:,5);
+gz = sdata(:,6);

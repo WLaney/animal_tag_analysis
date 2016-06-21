@@ -1,3 +1,5 @@
+global dt;
+dt = 1/12;
 %% filter_data.m
 % This script takes raw sensor readouts and tries to convert them into
 % a more physically descriptive format. For now, it tries to guess the
@@ -15,15 +17,15 @@
 
 %% Get pitch and roll from both sensors
 % Accelerometer
-[a_pitch, a_roll] = accel_pr(ax, ay, az);
+[a_pitch, a_roll] = accel_pr(ax, ay, az, dt);
 
 % For instability reasons, accelerometer pitch is limited to +-90 degrees.
 % Roll is limited to +-180 degrees. This choice is arbitrary, and we can
 % change it if sharks ever decide to swim upside down.
-
+5
 % Gyroscope
-g_pitch = mod(cumsum(gx ./ 12, 2) + 180, 360) - 180;
-g_roll  = mod(cumsum(gy ./ 12, 2) + 180, 360) - 180;
+g_pitch = mod(cumsum(gx .* dt, 1) + 180, 360) - 180;
+g_roll  = mod(cumsum(gy .* dt, 1) + 180, 360) - 180;
 
 % %% Combine Data with Complementary Filter
 % % A Complementary filter is a lot easier to implement than a Kalman filter
@@ -54,21 +56,21 @@ g_roll  = mod(cumsum(gy ./ 12, 2) + 180, 360) - 180;
 % end
 
 %% Combine Data with Kalman Filter
-kal_pitch = kalman_ag(a_pitch, gx, 1/12);
-kal_roll  = kalman_ag(a_roll, gy, 1/12);
+kal_pitch = kalman_ag(a_pitch, gx, dt);
+kal_roll  = kalman_ag(a_roll, gy,  dt);
 
 %% Here's a Bunch of Freaking Graphs
 figure(1);
 % Accel
 subplot(3, 2, 1);
-plot(date_time, [ax;ay;az]);
+plot(date_time, [ax,ay,az]);
 ylabel('Acc. (g''s)');
 axis([-inf, inf, -8, 8]);
 legend('x', 'y', 'z');
 title('Accelerometer');
 % Gyro
 subplot(3, 2, 2);
-plot(date_time, [gx;gy;gz]);
+plot(date_time, [gx,gy,gz]);
 ylabel('Ang. Vel (dps)');
 axis([-inf, inf, -360, 360]);
 legend('x', 'y', 'z');
@@ -76,8 +78,8 @@ title('Gyroscope');
 % Pitch
 subplot(3, 1, 2);
 hold on
-plot(date_time, [a_pitch; a_roll], ':');
-plot(date_time, [g_pitch; g_roll]);
+plot(date_time, [a_pitch,a_roll], ':');
+plot(date_time, [g_pitch,g_roll]);
 hold off
 ylabel('Deg');
 axis([-inf, inf, -180, 180]);
@@ -93,7 +95,7 @@ title('Raw Pitch and Roll');
 
 % Plot
 subplot(3, 1, 3);
-plot(date_time, [kal_pitch; kal_roll]);
+plot(date_time, [kal_pitch,kal_roll]);
 ylabel('Deg');
 axis([-inf, inf, -180, 180]);
 legend('Pitch', 'Roll');

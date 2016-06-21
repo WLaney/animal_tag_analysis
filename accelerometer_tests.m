@@ -1,18 +1,8 @@
-disp 'When you''re ready to advance to the next test, hit the enter key.'
-disp 'Test: wait'
-run_accelerometer_test('wait');
-pause
-disp 'Test: pitch'
-run_accelerometer_test('pitch');
-pause
-disp 'Test: roll'
-run_accelerometer_test('roll');
-pause
-disp 'Test: roll180'
-run_accelerometer_test('roll180');
-pause
-disp 'Test: roll360'
-run_accelerometer_test('roll360');
-pause
-disp 'Test: yaw360'
-run_accelerometer_test('yaw360');
+disp 'Press enter to continue.';
+
+test_folders = dir('model/tests');
+for test=3:length(test_folders)
+	run_accelerometer_test(test_folders(test).name);
+	pause
+	close all
+end

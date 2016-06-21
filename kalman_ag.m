@@ -16,7 +16,7 @@ C = [1, 0 ; 0, 1];
 Q = eye(2) * 0.1; % This might be gyroscope noise?
 R = eye(2) * 0.3; % Accelerometer noise, definitely
 
-% Reshapen inputs
+% Reshape inputs
 z = reshape(a_ang, min(size(a_ang)), length(a_ang));
 z = [z; zeros(1, length(z))];
 y = reshape(g_vel, min(size(a_ang)), length(a_ang));
@@ -37,7 +37,7 @@ for i=2:length(mu)
     sigma = (eye(2) - k*C)*sigma_guess;
 end
 
-angle = mu(1,:);
+angle = mu(1,:)';
 
 % Questions:
 % - Why is the first set of sensor measurements discarded?

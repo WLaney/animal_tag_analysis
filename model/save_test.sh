@@ -6,4 +6,4 @@ mkdir -p $TEST_DIR
 cp fake.txt real.txt angles.txt $TEST_DIR
 
 echo "Enter your test data here." > $TEST_DIR/info.txt
-geany $TEST_DIR/info.txt
+vim $TEST_DIR/info.txt
