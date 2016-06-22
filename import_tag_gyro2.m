@@ -1,6 +1,8 @@
 function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
-%Import tag data from the gyroscope, interpolating time.
-%   Done mainly to get more familiar with MATLAB.
+% Import tag data from the gyroscope, interpolating datetime.
+%
+% [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
+% Pressure, which is currently not implemented, returns 0.
 fp = fopen(filename);
 if fp == -1
     error(['Could not open ' filename]);
