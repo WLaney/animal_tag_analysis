@@ -4,11 +4,15 @@
 % From there, we can figure out the biases, scale errors, etc. of
 % our accelerometer.
 
-[ax,ay,az,~,~,~,~,~,~] = import_tag_gyro2('spin-calibrate.TXT');
-% Initial and final data is not part of calibration
-x = ax(36:(end-36));
-y = ay(36:(end-36));
-z = az(36:(end-36));
+data = xlsread('rotator.xls');
+x = data(:,1);
+y = data(:,2);
+z = data(:,3);
+
+% [ax,ay,az,~,~,~,~,~,~] = import_tag_gyro2('spin-calibrate.TXT');
+% x = ax(36:(end-36));
+% y = ay(36:(end-36));
+% z = az(36:(end-36));
 [center, radii, evecs, v, chi2] = ellipsoid_fit([x y z]);
 
 % Stolen shamelessly from test_ellipsoid_fit.m

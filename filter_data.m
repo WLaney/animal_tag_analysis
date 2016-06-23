@@ -17,12 +17,15 @@ dt = 1/12;
 
 %% Get pitch and roll from both sensors
 % Accelerometer
-[a_pitch, a_roll] = accel_pr(ax, ay, az, dt);
+x_f = ax - brick_wall(ax, dt);
+y_f = ay - brick_wall(ay, dt);
+z_f = az - brick_wall(az, dt);
+[a_pitch, a_roll] = accel_pr(x_f, y_f, z_f);
 
 % For instability reasons, accelerometer pitch is limited to +-90 degrees.
 % Roll is limited to +-180 degrees. This choice is arbitrary, and we can
 % change it if sharks ever decide to swim upside down.
-5
+
 % Gyroscope
 g_pitch = mod(cumsum(gx .* dt, 1) + 180, 360) - 180;
 g_roll  = mod(cumsum(gy .* dt, 1) + 180, 360) - 180;
