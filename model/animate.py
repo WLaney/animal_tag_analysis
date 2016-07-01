@@ -60,7 +60,7 @@ with open(FAKEFILE,  'w') as fakef, \
 		realf.write(tag.get_actual())
 		realf.write("\n")
 		
-		anglef.write("%5.3f\t%5.3f\t%5.3f\n" % (*tag.get_angle(),))
+		anglef.write(tag.get_angle_s())
 		# update ts
 		tag.update(TIMESTEP)
 		dt += step

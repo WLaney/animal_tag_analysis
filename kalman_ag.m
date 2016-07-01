@@ -13,8 +13,8 @@ C = [1, 0 ; 0, 1];
 % System noise and measurement noise, respectively. The former is
 % for currents/vibrations; the latter is for sensor noise. We need to
 % get measurements or estimations for both, eventually.
-Q = eye(2) * 0.1; % This might be gyroscope noise?
-R = eye(2) * 0.3; % Accelerometer noise, definitely
+Q = eye(2) * 4.5; % This might be gyroscope noise?
+R = eye(2) * 1; % Accelerometer noise, definitely
 
 % Reshape inputs
 z = reshape(a_ang, min(size(a_ang)), length(a_ang));

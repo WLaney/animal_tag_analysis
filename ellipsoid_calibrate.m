@@ -4,12 +4,8 @@
 % From there, we can figure out the biases, scale errors, etc. of
 % our accelerometer.
 
-data = xlsread('rotator.xls');
-x = data(:,1);
-y = data(:,2);
-z = data(:,3);
+[x,y,z,~,~,~,~,~,~] = import_tag_gyro2('accel_calibration.txt');
 
-% [ax,ay,az,~,~,~,~,~,~] = import_tag_gyro2('spin-calibrate.TXT');
 % x = ax(36:(end-36));
 % y = ay(36:(end-36));
 % z = az(36:(end-36));

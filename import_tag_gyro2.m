@@ -3,6 +3,7 @@ function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename
 %
 % [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
 % Pressure, which is currently not implemented, returns 0.
+filename = strcat('data/', filename);
 fp = fopen(filename);
 if fp == -1
     error(['Could not open ' filename]);
@@ -12,8 +13,24 @@ TAB = sprintf('\t');
 
 %% Get Raw Data
 sdata = []; % ax ay az gx gy gz
-% Initial time data
+name='unnamed tag';
+orient=0;
+% First line might contain name+orient... or not
 tline = fgetl(fp);
+if tline(1) ~= TAB
+    cells = strsplit(tline, TAB);
+    name = cells{1};
+    orient = str2num(cells{2});
+    tline = fgetl(fp);
+end
+disp(name)
+if orient==1
+   disp 'Orientation will be corrected.' 
+else
+   disp 'Orientation is assumed to be correct.'
+end
+
+% First line - date/time info
 date_time = [datetime(tline(7:end), 'InputFormat', 'y-M-d H:m:s')];
 temp = [0];
 pressure = [0];
@@ -60,6 +77,12 @@ end
 ax = sdata(:,1);
 ay = sdata(:,2);
 az = sdata(:,3);
-gy = sdata(:,4); % intentional - fixes misalignment of gyroscope
-gx = sdata(:,5);
+% Fix gyroscope misalignment if necessary
+if orient == 1
+    gy = sdata(:,4);
+    gx = sdata(:,5);
+else
+    gx = sdata(:,4);
+    gy = sdata(:,5);
+end
 gz = sdata(:,6);

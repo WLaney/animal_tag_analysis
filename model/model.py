@@ -46,7 +46,6 @@ class Model:
 		"""Advance this model by timestep seconds."""
 		for i in range(0,len(self._angle)):
 			self._angle[i] += self._angular_velocity[i] * timestep
-			self._angle[i] = (self._angle[i] + 180) % 360 - 180
 
 	def set_angular_velocity(self, p, r, y):
 		"""Set the pitch, roll, and yaw in deg/sec."""
@@ -108,12 +107,12 @@ class Model:
 	def _get_gravity_vector(self, p, r, yw):
 		"""Return a vector representing the force of gravity."""
 		p  = math.radians(-p)
-		r  = math.radians(-r)
+		r  = math.radians(r)
 		# Rotate a gravity vector (parallel to Z axis)
-		cos_r = math.cos(r)
-		x = -math.sin(p) * cos_r
-		y = math.sin(r)
-		z = math.cos(p) * cos_r
+		cos_p = math.cos(p)
+		x = cos_p * math.sin(r)
+		y = -math.sin(p)
+		z = cos_p * math.cos(r)
 		return [x, y, z]
 
 	def get_readouts(self) -> str:
@@ -126,3 +125,7 @@ class Model:
 		return "%13.8f %13.8f %13.8f" % (*self.get_angular_velocity(),) \
 				+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_acceleration(),) #\
 				#+ "\t" + "%13.8f %13.8f %13.8f" % (*self.get_linear_accel(),) 
+				
+	def get_angle_s(self) -> str:
+		"""Return the angle as a tab-separated string."""
+		return "%5.3f\t%5.3f\t%5.3f\n" % (*self.get_angle(),)

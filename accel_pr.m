@@ -5,16 +5,16 @@ function [ pitch, roll ] = accel_pr( x, y, z )
 %   The coordinate system used is x=pitch, y=roll, and z=yaw.
 %   There may be instability around certain angles (Gimbal lock &c.).
 
-% The atan2 difference between small positive numbers and small negative
-% numbers is huge. I want to defeat noise errors when close to 0.
-% if abs(x_f) < 0.0001; x_f = 0; end
-% if abs(y_f) < 0.0001; y_f = 0; end
-% if abs(z_f) < 0.0001; z_f = 0; end
+% Stolen from our accelerometry paper (Eqn. 25)
+% Reordering of coordinates, inverting pitch intentional
+roll  = rad2deg(atan2(x, z));
+pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
 
-% Stolen from:
-% https://theccontinuum.com/2012/09/24/arduino-imu-pitch-roll-from-accelerometer/
-pitch = -rad2deg(atan2(-x, z));
-roll = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
+% Attempted workaround from the same paper (Eqn. 37)
+% that tries to avoid gimbal lock
+% sign_z = (z > 0) * 2 - 1;
+% mu = 0.1;
+% roll  = rad2deg(atan2(x, sign_z .* sqrt(z.^2 + mu*y.^2)));
+% pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
 
 end
-
