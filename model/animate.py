@@ -9,23 +9,15 @@ REALFILE = "real.txt"
 ANGLEFILE = "angles.txt"
 
 events = [
-	( 4, 'set_angular_velocity', (   0,  90,   0)),
-	( 5, 'set_angular_velocity', (   0,   0,   0)),
-	( 9, 'set_angular_velocity', (   0,  90,   0)),
-	(10, 'set_angular_velocity', (   0,   0,   0)),
-	(14, 'set_angular_velocity', (   0, -90,   0)),
-	(15, 'set_angular_velocity', (   0,   0,   0)),
-	(19, 'set_angular_velocity', (   0, -90,   0)),
-	(20, 'set_angular_velocity', (   0,   0,   0)),
-	(24, 'set_angular_velocity', (   0, -90,   0)),
-	(25, 'set_angular_velocity', (   0,   0,   0)),
-	(29, 'set_angular_velocity', (   0, -90,   0)),
-	(30, 'set_angular_velocity', (   0,   0,   0)),
-	(34, 'set_angular_velocity', (   0,  90,   0)),
-	(35, 'set_angular_velocity', (   0,   0,   0)),
-	(39, 'set_angular_velocity', (   0,  90,   0)),
-	(40, 'set_angular_velocity', (   0,   0,   0)),
-	(45, 'end', [])
+	( 4, 'set_angular_velocity', (  90,   0,  90)),
+	( 5, 'set_angular_velocity', (   0,   0,  90)),
+	( 9, 'set_angular_velocity', ( -90,   0,  90)),
+	(10, 'set_angular_velocity', (   0,   0,  90)),
+	(14, 'set_angular_velocity', ( -90,   0,  90)),
+	(15, 'set_angular_velocity', (   0,   0,  90)),
+	(19, 'set_angular_velocity', (  90,   0,  90)),
+	(20, 'set_angular_velocity', (   0,   0,  90)),
+	(25, 'end', [])
 ]
 heapq.heapify(events)
 

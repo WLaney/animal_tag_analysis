@@ -1,0 +1,11 @@
+00: tag resting
+04: roll tag counterclockwise 90 degrees/second
+05: stop rotating
+09: roll tag clockwise 90 degrees/second
+10: stop rotating
+14: roll tag clockwise 90 degrees/second
+15: stop rotating
+19: roll tag counterclockwise 90 degrees/second
+20: stop rotating
+
+We then repeat this pattern once.

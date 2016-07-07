@@ -1,0 +1,17 @@
+04: roll tag 90d counterclockwise over 1 second
+05: tag is now at 90d roll
+09: roll tag 90d counterclockwise over 1 second
+10: tag is now at 180 roll
+14: roll tag 90d counterclockwise over 1 second
+15: tag is now at 270 roll
+19: roll tag 90d counterclockwise over 1 second
+20: tag is now at 360 roll
+
+24: roll tag 90d clockwise over 1 second
+25: tag is now at 270d roll
+29: roll tag 90d clockwise over 1 second
+30: tag is now at 180 roll
+34: roll tag 90d clockwise over 1 second
+35: tag is now at 90 roll
+39: roll tag 90d clockwise over 1 second
+40: tag is now at 0 roll

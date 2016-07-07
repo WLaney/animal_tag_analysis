@@ -13,7 +13,7 @@ pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
 % Attempted workaround from the same paper (Eqn. 37)
 % that tries to avoid gimbal lock
 % sign_z = (z > 0) * 2 - 1;
-% mu = 0.1;
+% mu = 1;
 % roll  = rad2deg(atan2(x, sign_z .* sqrt(z.^2 + mu*y.^2)));
 % pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
 

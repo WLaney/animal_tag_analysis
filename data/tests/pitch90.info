@@ -1,0 +1,11 @@
+00: tag resting
+04: tag is pitched counterclockwise 90 degrees over 1 second
+05: tag resting at gimbal lock
+09: tag pitched clockwise 90deg. over 1 second
+10: tag resting flat
+14: tag pitched clockwise 90deg
+15: tag resting at other gimbal lock
+19: tag pitched counterclockwise 90 deg
+20: tag resting flat
+
+We then repeat this test.

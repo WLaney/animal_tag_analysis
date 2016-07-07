@@ -1,0 +1,10 @@
+04: roll 90 counterclockwise over 1 second
+05: resting at 90deg
+09: roll 90 counter over 1
+10: resting at 180deg
+14: roll 90 clockwise
+15: 90deg
+19: roll 90 clockwise:
+20: 0deg
+
+then reverse instructions

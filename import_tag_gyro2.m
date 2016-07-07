@@ -1,4 +1,4 @@
-function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
+function [ax,ay,az,gx,gy,gz,date_time,temp,pressure,bias] = import_tag_gyro2(filename)
 % Import tag data from the gyroscope, interpolating datetime.
 %
 % [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag_gyro2(filename)
@@ -10,17 +10,21 @@ if fp == -1
 end
 
 TAB = sprintf('\t');
+% Since NaT is actually a function, I save it here
+NAT = NaT;
 
 %% Get Raw Data
 sdata = []; % ax ay az gx gy gz
 name='unnamed tag';
 orient=0;
+bias=[0,0,0];
 % First line might contain name+orient... or not
 tline = fgetl(fp);
 if tline(1) ~= TAB
     cells = strsplit(tline, TAB);
     name = cells{1};
-    orient = str2num(cells{2});
+    orient = str2double(cells{2});
+    bias = sscanf(fgetl(fp), '%f %f %f');
     tline = fgetl(fp);
 end
 disp(name)
@@ -51,7 +55,7 @@ while true
    else
        sdata = [sdata; sscanf(tline, '%f %f %f %f %f %f')'];
        if (size(sdata,1) ~= 1)
-           date_time = [date_time; NaT];
+           date_time = [date_time; NAT];
            temp = [temp; temp(end)];
            pressure = [pressure; pressure(end)];
        end

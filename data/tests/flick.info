@@ -1,0 +1,12 @@
+GOAL: Orientation should remain constant. Accelerometry should fluctuate
+in predictable ways, while angular velocity should be minimal, especially
+drift.
+
+03: flick the tag on the negative X with as little rotation as possible.
+    the tag should stop moving by 04.
+05: flick -x
+07: flick -x
+
+11: flick +x
+13: flick +x
+15: flick +x
