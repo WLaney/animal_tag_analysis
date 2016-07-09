@@ -8,21 +8,19 @@ dt = 1/12;
 
 %% Get pitch and roll from both sensors
 % Accelerometer
-x_f = ax;% - brick_wall(ax, dt);
-y_f = ay;% - brick_wall(ay, dt);
-z_f = az;% - brick_wall(az, dt);
+x_f = ax; % - brick_wall(ax, dt);
+y_f = ay; % - brick_wall(ay, dt);
+z_f = az; % - brick_wall(az, dt);
 [a_pitch, a_roll] = accel_pr(x_f, y_f, z_f);
-
-% For instability reasons, accelerometer pitch is limited to +-90 degrees.
-% Roll is limited to +-180 degrees. This choice is arbitrary, and we can
-% change it if sharks ever decide to swim upside down.
+a_pitch = unwrap_angles(a_pitch);
+a_roll  = unwrap_angles(a_roll);
 
 % Gyroscope
 gx_d = gx .* dt;
 gy_d = gy .* dt;
 gz_d = gz .* dt;
-g_pitch = mod(cumsum(gx_d, 1) + 180, 360) - 180;
-g_roll  = mod(cumsum(gy_d, 1) + 180, 360) - 180;
+g_pitch = cumsum(gx_d, 1);
+g_roll  = cumsum(gy_d, 1);
 
 %% Combine Data with Complementary Filter
 % A Complementary filter is a lot easier to implement than a Kalman filter
@@ -72,7 +70,6 @@ title('Accelerometer');
 subplot(3, 2, 2);
 plot(date_time, [gx,gy,gz]);
 ylabel('Ang. Vel (dps)');
-axis([-inf, inf, -360, 360]);
 legend('x', 'y', 'z');
 title('Gyroscope');
 % Pitch
@@ -82,49 +79,39 @@ plot(date_time, [a_pitch,a_roll], ':');
 plot(date_time, [g_pitch,g_roll]);
 hold off
 ylabel('Deg');
-axis([-inf, inf, -180, 180]);
 legend('A.Pitch', 'A.Roll', 'G.Pitch', 'G.Roll');
 title('Raw Pitch and Roll');
 
-% Complementary Filter
+% Filter (Complementary or Kalman)
 subplot(3, 1, 3);
 plot(date_time, [comb_pitch, comb_roll]);
 ylabel('Deg');
-axis([-inf, inf, -180, 180]);
 legend('Pitch', 'Roll');
-title('P&R with Complementary Filter');
-% 
-% figure(2);
-% % Accel
-% subplot(3, 1, 1);
-% plot(date_time, [ax,ay,az]);
-% ylabel('Acc. (g''s)');
-% axis([-inf, inf, -8, 8]);
-% legend('x', 'y', 'z');
-% title('Accelerometer');
-% 
-% % Gravity
-% subplot(3, 1, 2);
-% plot(date_time, gravity);
-% ylabel('g''s');
-% axis([-inf, inf, -1, 1]);
-% legend('x', 'y', 'z');
-% title('Gravity (derived)');
-% 
-% % Linear Acceleration
-% subplot(3, 1, 3);
-% plot(date_time, linear_accel);
-% ylabel('g''s');
-% axis([-inf, inf, -8, 8]);
-% legend('x', 'y', 'z');
-% title('Linear Acceleration (der.)');
+title('P&R with Filter');
 
-% % Plot
-% subplot(3, 1, 3);
-% plot(date_time, [kal_pitch,kal_roll]);
-% ylabel('Deg');
-% axis([-inf, inf, -180, 180]);
-% legend('Pitch', 'Roll');
-% title('P&R with Kalman Filter');
+figure(2);
+% Accel
+subplot(3, 1, 1);
+plot(date_time, [ax,ay,az]);
+ylabel('Acc. (g''s)');
+axis([-inf, inf, -8, 8]);
+legend('x', 'y', 'z');
+title('Accelerometer');
+
+% Gravity
+subplot(3, 1, 2);
+plot(date_time, gravity);
+ylabel('g''s');
+axis([-inf, inf, -1, 1]);
+legend('x', 'y', 'z');
+title('Gravity (derived)');
+
+% Linear Acceleration
+subplot(3, 1, 3);
+plot(date_time, linear_accel);
+ylabel('g''s');
+axis([-inf, inf, -8, 8]);
+legend('x', 'y', 'z');
+title('Linear Acceleration (der.)');
 
 end
