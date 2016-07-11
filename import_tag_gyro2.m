@@ -65,17 +65,30 @@ end
 fclose(fp);
 
 %% Datetime interpolation
-% Stolen from William
-time_ind=find(~isnat(date_time));
-for n=1:(length(time_ind)-1);
-    time_diff=date_time(time_ind(n+1))-date_time(time_ind(n)); %diff between recorded times
-    num_of_point=time_ind(n+1)-time_ind(n); %number of points that need to be interp
-    time_increase=time_diff/num_of_point; %step size of interp
-    %fill in the blank times
-    for k =time_ind(n)+1:time_ind(n+1)
-        date_time(k)=date_time(k-1)+time_increase;
-    end
+inds = find(~isnat(date_time));
+% from 1 to (inds-1):
+%   get the last time value and the current one
+%   find the number of indices between the two
+%   linspace() the two and assign it to the date_time
+for n=1:(length(inds)-1)
+   i_old = inds(n);
+   i_new = inds(n+1);
+   t_old = date_time(i_old);
+   t_new = date_time(i_new);
+   date_time(i_old:(i_new-1)) = linspace(t_old, t_new, i_new-i_old);
 end
+
+% Stolen from William
+% time_ind=find(~isnat(date_time));
+% for n=1:(length(time_ind)-1);
+%     time_diff=date_time(time_ind(n+1))-date_time(time_ind(n)); %diff between recorded times
+%     num_of_point=time_ind(n+1)-time_ind(n); %number of points that need to be interp
+%     time_increase=time_diff/num_of_point; %step size of interp
+%     %fill in the blank times
+%     for k =time_ind(n)+1:time_ind(n+1)
+%         date_time(k)=date_time(k-1)+time_increase;
+%     end
+% end
 
 %% Finalize Variables
 ax = sdata(:,1);
