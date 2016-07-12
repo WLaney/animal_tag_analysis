@@ -11,4 +11,4 @@ slprj/
 octave-workspace
 
 # text files
-*.txt
+# *.txt

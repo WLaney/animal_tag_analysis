@@ -1,0 +1,1 @@
+Pitch the sensor back and forth 90 degreess.

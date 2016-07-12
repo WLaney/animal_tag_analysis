@@ -1,4 +1,4 @@
-function [comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(filename)
+function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(filename)
 
 dt = 1/12; %sample period
 %% Import Data
@@ -8,23 +8,21 @@ dt = 1/12; %sample period
 
 %% Get pitch and roll from both sensors
 % Accelerometer
-x_f = ax;% - brick_wall(ax, dt);
-y_f = ay;% - brick_wall(ay, dt);
-z_f = az;% - brick_wall(az, dt);
+x_f = ax; % - brick_wall(ax, dt);
+y_f = ay; % - brick_wall(ay, dt);
+z_f = az; % - brick_wall(az, dt);
 [a_pitch, a_roll] = accel_pr(x_f, y_f, z_f);
-
-% For instability reasons, accelerometer pitch is limited to +-90 degrees.
-% Roll is limited to +-180 degrees. This choice is arbitrary, and we can
-% change it if sharks ever decide to swim upside down.
+a_pitch = unwrap_angles(a_pitch);
+a_roll  = unwrap_angles(a_roll);
 
 % Gyroscope
 gx_d = gx .* dt;
 gy_d = gy .* dt;
 gz_d = gz .* dt;
-g_pitch = mod(cumsum(gx_d, 1) + 180, 360) - 180;
-g_roll  = mod(cumsum(gy_d, 1) + 180, 360) - 180;
+g_pitch = cumsum(gx_d, 1);
+g_roll  = cumsum(gy_d, 1);
 
-%% Combine Data with Complementary Filter
+% %% Combine Data with Complementary Filter
 % A Complementary filter is a lot easier to implement than a Kalman filter
 % (I'll eventually replace it). It's actually a special kind of Kalman
 % filter.
@@ -46,7 +44,8 @@ g_roll  = mod(cumsum(gy_d, 1) + 180, 360) - 180;
 %     ar = (1-rweight) * (g_roll(i)) + rweight*(a_pitch(i));
 %     comb_roll(i) = ar;
 % end
-% %% Combine Data with Kalman Filter
+
+%% Combine Data with Kalman Filter
 comb_pitch = kalman_ag(a_pitch, gx, dt);
 comb_roll  = kalman_ag(a_roll, gy,  dt);
 
@@ -59,7 +58,7 @@ cp = cos(rp);
 gravity = [-sin(rp), cp.*sin(rr), cp.*cos(rr)];
 linear_accel = [ax, ay, az] - gravity;
 
-%% Here's a Bunch of Freaking Graphs
+%% Here's a Bunch of Graphs
 figure(1);
 % Accel
 subplot(3, 2, 1);
@@ -72,7 +71,6 @@ title('Accelerometer');
 subplot(3, 2, 2);
 plot(date_time, [gx,gy,gz]);
 ylabel('Ang. Vel (dps)');
-axis([-inf, inf, -360, 360]);
 legend('x', 'y', 'z');
 title('Gyroscope');
 % Pitch
@@ -82,18 +80,18 @@ plot(date_time, [a_pitch,a_roll], ':');
 plot(date_time, [g_pitch,g_roll]);
 hold off
 ylabel('Deg');
-axis([-inf, inf, -180, 180]);
 legend('A.Pitch', 'A.Roll', 'G.Pitch', 'G.Roll');
 title('Raw Pitch and Roll');
 
-% Complementary Filter
+% Filter (Complementary or Kalman)
 subplot(3, 1, 3);
 plot(date_time, [comb_pitch, comb_roll]);
 ylabel('Deg');
-axis([-inf, inf, -180, 180]);
 legend('Pitch', 'Roll');
-title('P&R with Complementary Filter');
-% 
+title('P&R with Filter');
+
+brush on
+
 % figure(2);
 % % Accel
 % subplot(3, 1, 1);
@@ -118,13 +116,5 @@ title('P&R with Complementary Filter');
 % axis([-inf, inf, -8, 8]);
 % legend('x', 'y', 'z');
 % title('Linear Acceleration (der.)');
-
-% % Plot
-% subplot(3, 1, 3);
-% plot(date_time, [kal_pitch,kal_roll]);
-% ylabel('Deg');
-% axis([-inf, inf, -180, 180]);
-% legend('Pitch', 'Roll');
-% title('P&R with Kalman Filter');
 
 end
