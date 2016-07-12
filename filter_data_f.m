@@ -56,6 +56,7 @@ rp = deg2rad(comb_pitch);
 rr = deg2rad(comb_roll);
 cp = cos(rp);
 gravity = [-sin(rp), cp.*sin(rr), cp.*cos(rr)];
+%add check that this magnitude is 1
 linear_accel = [ax, ay, az] - gravity;
 
 %% Here's a Bunch of Graphs

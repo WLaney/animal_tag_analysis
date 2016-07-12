@@ -13,8 +13,10 @@ C = [1, 0 ; 0, 1];
 % System noise and measurement noise, respectively. The former is
 % for currents/vibrations; the latter is for sensor noise. We need to
 % get measurements or estimations for both, eventually.
-Q = eye(2) * 0.2;
-R = eye(2) * 0.4;
+sytem_noise=0.2; %guess
+measrment_noise=0.4; %guess
+Q = eye(2) * sytem_noise;
+R = eye(2) * measrment_noise;
 
 % Reshape inputs
 z = reshape(a_ang, min(size(a_ang)), length(a_ang));
@@ -22,8 +24,9 @@ z = [z; zeros(1, length(z))];
 y = reshape(g_vel, min(size(a_ang)), length(a_ang));
 
 % [angle , bias]
-mu = zeros(size(z));
-sigma = 0.3 * eye(2);
+inital_sigma_guess=0.3; %this value dosen,t mater bc filter will quickly converge
+mu = zeros(size(z)); %current filter guess, mean of what it should be
+sigma = inital_sigma_guess * eye(2); %BEN PUT COMMENT
 % 
 % figure(20);
 % hs11 = animatedline('Color', 'r');
