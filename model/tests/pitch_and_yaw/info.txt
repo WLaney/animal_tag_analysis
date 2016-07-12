@@ -1,0 +1,1 @@
+Yaw the tag continuously while pitching it back and forth 90 degrees.
