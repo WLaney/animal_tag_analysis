@@ -3,7 +3,7 @@ function [ angle ] = kalman_ag( a_ang, g_vel, dt )
 % to combine the two signals into the "correct" angle.
 %
 % a_ang is the angle as guessed by the accelerometer. g_vel is the
-% instantaneous angular velocity. dt is the saple period.
+% instantaneous angular velocity. dt is the sample period.
 
 % Various constants. Don't worry about them.
 A = [1, -dt ; 0, 1];

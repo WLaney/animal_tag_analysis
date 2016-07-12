@@ -1,6 +1,6 @@
 function [comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(filename)
 
-dt = 1/12;
+dt = 1/12; %sample period
 %% Import Data
 % Real-World Data
 [ax,ay,az,gx,gy,gz,date_time,temp,pressure,bias] = ...
