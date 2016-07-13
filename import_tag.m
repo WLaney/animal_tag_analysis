@@ -2,13 +2,14 @@ function [ax,ay,az,gx,gy,gz,date_time,temp,pressure,date_time_short] = import_ta
 %IMPORTFILE Import numeric data from a text file as column vectors.
 %   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
 %   Reads data from text file FILENAME for the default selection. Short is
-%   an optional paramter that when set to True retuns temp, pressure, and
-%   date_time called date_time_short without blank rows
+%   an optional paramter that when set to true retuns temp, pressure, and
+%   date_time called date_time_short without blank rows. The default value
+%   of short is false
 
 %% Initialize variables.
 startRow = 2;
 endRow = inf;
-if nargin < 2 %check if short info was provided, if not make it false
+if nargin < 2 %check if short info was provided, if it was not make it false
     short=false;
 end
 
