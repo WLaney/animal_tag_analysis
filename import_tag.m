@@ -1,7 +1,9 @@
 function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag(filename, short)
 %IMPORTFILE Import numeric data from a text file as column vectors.
-%   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME)
-%   Reads data from text file FILENAME for the default selection.
+%   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
+%   Reads data from text file FILENAME for the default selection. Short is
+%   an optional paramter that when set to True retuns temp and pressure
+%   without blank rows
 %
 %   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME,
 %   STARTROW, ENDROW) Reads data from rows STARTROW through ENDROW of text
@@ -18,6 +20,9 @@ function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag(filename, shor
 %% Initialize variables.
 startRow = 2;
 endRow = inf;
+if nargin < 2 %check if short info was provided, if not make it false
+    short=false;
+end
 
 %% Read columns of data as strings:
 % For more information, see the TEXTSCAN documentation.
@@ -118,11 +123,20 @@ date_time = dates{:, 1};
 temp = cell2mat(rawNumericColumns(:, 7));
 pressure = cell2mat(rawNumericColumns(:, 8));
 
-%% Datetime interpolation
+%% creat short versions
+%if short is requested creat the short time, pressure, and temp
+if short==true
 %creat date_time file of only datetimes written by RTC with no blanks
-%before doing the interpolation, this is for the pressure/temp data
+%for the pressure/temp data
 date_time_short=date_time(~isnat(date_time));
 
+%get rid of all blank rows in pressure and temp
+not_data=isnan(temp(1:end));
+temp(not_data,:)=[];
+pressure(not_data,:)=[];
+end
+
+%% Datetime interpolation
 %this way is faster and gives functionaly identical values to the way below
 inds = find(~isnat(date_time));
 % from 1 to (inds-1):
@@ -151,8 +165,4 @@ gz(not_data,:)=[];
 %date_time. The removed times corosponed to when the RTC wrote the time to
 %the SD, this does not occure simotanusly with any accel/gyro read
 date_time(not_data,:)=[];
-
-%get rid of all blank rows in pressure and temp
-not_data=isnan(temp(1:end));
-temp(not_data,:)=[];
-pressure(not_data,:)=[];
+end
