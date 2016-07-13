@@ -1,4 +1,4 @@
-function [ax,ay,az,gx,gy,gz,date_time,temp,pressure] = import_tag(filename, short)
+function [ax,ay,az,gx,gy,gz,date_time,temp,pressure,date_time_short] = import_tag(filename, short)
 %IMPORTFILE Import numeric data from a text file as column vectors.
 %   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
 %   Reads data from text file FILENAME for the default selection. Short is
@@ -126,14 +126,16 @@ pressure = cell2mat(rawNumericColumns(:, 8));
 %% creat short versions
 %if short is requested creat the short time, pressure, and temp
 if short==true
-%creat date_time file of only datetimes written by RTC with no blanks
-%for the pressure/temp data
-date_time_short=date_time(~isnat(date_time));
-
-%get rid of all blank rows in pressure and temp
-not_data=isnan(temp(1:end));
-temp(not_data,:)=[];
-pressure(not_data,:)=[];
+    %creat date_time file of only datetimes written by RTC with no blanks
+    %for the pressure/temp data
+    date_time_short=date_time(~isnat(date_time));
+    
+    %get rid of all blank rows in pressure and temp
+    not_data=isnan(temp(1:end));
+    temp(not_data,:)=[];
+    pressure(not_data,:)=[];
+else
+    date_time_short=[];
 end
 
 %% Datetime interpolation
@@ -144,11 +146,11 @@ inds = find(~isnat(date_time));
 %   find the number of indices between the two
 %   linspace() the two and assign it to the date_time
 for n=1:(length(inds)-1)
-   i_old = inds(n);
-   i_new = inds(n+1);
-   t_old = date_time(i_old);
-   t_new = date_time(i_new);
-   date_time(i_old:(i_new-1)) = linspace(t_old, t_new, i_new-i_old);
+    i_old = inds(n);
+    i_new = inds(n+1);
+    t_old = date_time(i_old);
+    t_new = date_time(i_new);
+    date_time(i_old:(i_new-1)) = linspace(t_old, t_new, i_new-i_old);
 end
 %% Remove Blank Rows
 
