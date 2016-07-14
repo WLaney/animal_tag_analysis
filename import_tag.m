@@ -7,15 +7,16 @@ function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filen
 %   of short is false
 
 %% Initialize variables.
+delimiter = ',';
 startRow = 2;
-endRow = inf;
+endRow = 1000;
 if nargin < 2 %check if short info was provided, if it was not make it false
     short=false;
 end
 
 %% Read columns of data as strings:
 % For more information, see the TEXTSCAN documentation.
-formatSpec = '%4s%5s%5s%5s%5s%5s%18s%6s%s%[^\n\r]';
+formatSpec = '%s%s%s%s%s%s%s%s%s%[^\n\r]';
 
 %% Open the text file.
 fileID = fopen(filename,'r');
@@ -24,10 +25,10 @@ fileID = fopen(filename,'r');
 % This call is based on the structure of the file used to generate this
 % code. If an error occurs for a different file, try regenerating the code
 % from the Import Tool.
-dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1)+1, 'Delimiter', '', 'WhiteSpace', '', 'HeaderLines', startRow(1)-1, 'ReturnOnError', false);
+dataArray = textscan(fileID, formatSpec, endRow(1)-startRow(1)+1, 'Delimiter', delimiter, 'HeaderLines', startRow(1)-1, 'ReturnOnError', false);
 for block=2:length(startRow)
     frewind(fileID);
-    dataArrayBlock = textscan(fileID, formatSpec, endRow(block)-startRow(block)+1, 'Delimiter', '', 'WhiteSpace', '', 'HeaderLines', startRow(block)-1, 'ReturnOnError', false);
+    dataArrayBlock = textscan(fileID, formatSpec, endRow(block)-startRow(block)+1, 'Delimiter', delimiter, 'HeaderLines', startRow(block)-1, 'ReturnOnError', false);
     for col=1:length(dataArray)
         dataArray{col} = [dataArray{col};dataArrayBlock{col}];
     end
@@ -133,7 +134,7 @@ if short==true
 else
     date_time_short=[];
 end
-
+% 
 %% Datetime interpolation
 %interpolate the data time between RTC writes
 inds = find(~isnat(date_time));
@@ -148,7 +149,7 @@ for n=1:(length(inds)-1)
     t_new = date_time(i_new);
     date_time(i_old:(i_new-1)) = linspace(t_old, t_new, i_new-i_old);
 end
-
+% 
 %interpreter doent work with only one time stamp so data at the very end of
 %the file can't be interperpolated. This is not much
 %data so we are just going to remove it
