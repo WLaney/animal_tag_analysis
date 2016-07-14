@@ -143,6 +143,27 @@ for n=1:(length(inds)-1)
     t_new = date_time(i_new);
     date_time(i_old:(i_new-1)) = linspace(t_old, t_new, i_new-i_old);
 end
+
+%interpreter doent work with only one time stamp so data at the very end of
+%the file can't be interperted in the way done before. This is not much
+%data so we are just going to remove it
+data_end=isnat(date_time); %find uninterpolated data
+
+%we should not have to remove very many data points, if we do there is
+%probably a problem with the data
+max_data_removal= 150; %the max amount of data that is safe to remove
+if length(data_end) > max_data_removal
+    warning(['There is more data without a closing time'...
+    'then expected. Please double check the datafile for problems'])
+end
+date_time(data_end)=[]; %remove data
+ax(data_end,:)=[];
+ay(data_end,:)=[];
+az(data_end,:)=[];
+gx(data_end,:)=[];
+gy(data_end,:)=[];
+gz(data_end,:)=[];
+
 %% Remove Blank Rows
 
 %get rid off all bank rows in accel and gyro
