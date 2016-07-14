@@ -7,9 +7,10 @@ function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filen
 %   of short is false
 
 %% Initialize variables.
+tic
 delimiter = ',';
 startRow = 2;
-endRow = 1000;
+endRow = Inf;
 if nargin < 2 %check if short info was provided, if it was not make it false
     short=false;
 end
@@ -178,4 +179,5 @@ gyro(not_data,:)=[];
 %date_time. The removed times corosponed to when the RTC wrote the time to
 %the SD, this does not occure simotanusly with any accel/gyro read
 date_time(not_data)=[];
+toc
 end
