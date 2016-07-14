@@ -1,6 +1,6 @@
-function [ax,ay,az,gx,gy,gz,date_time,temp,pressure,date_time_short] = import_tag(filename, short)
+function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filename, short)
 %IMPORTFILE Import numeric data from a text file as column vectors.
-%   [AX,AY,AZ,GX,GY,GZ,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
+%   [accel,gyro,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
 %   Reads data from text file FILENAME for the default selection. Short is
 %   an optional paramter that when set to true retuns temp, pressure, and
 %   date_time called date_time_short without blank rows. The default value
@@ -112,7 +112,12 @@ date_time = dates{:, 1};
 temp = cell2mat(rawNumericColumns(:, 7));
 pressure = cell2mat(rawNumericColumns(:, 8));
 
-%% creat short versions
+%consolidate accel and gyro in to 2 matricies
+accel=[ax, ay, az];
+gyro=[gx, gy, gz];
+clear ax ay az gx gy gz %clear repative variables to free up space
+
+%% creat short versions, if needed
 %if short is requested creat the short time, pressure, and temp
 if short==true
     %creat date_time file of only datetimes written by RTC with no blanks
@@ -130,7 +135,7 @@ else
 end
 
 %% Datetime interpolation
-%this way is faster and gives functionaly identical values to the way below
+%interpolate the data time between RTC writes
 inds = find(~isnat(date_time));
 % from 1 to (inds-1):
 %   get the last time value and the current one
@@ -145,7 +150,7 @@ for n=1:(length(inds)-1)
 end
 
 %interpreter doent work with only one time stamp so data at the very end of
-%the file can't be interperted in the way done before. This is not much
+%the file can't be interperpolated. This is not much
 %data so we are just going to remove it
 data_end=isnat(date_time); %find uninterpolated data
 
@@ -154,29 +159,22 @@ data_end=isnat(date_time); %find uninterpolated data
 max_data_removal= 150; %the max amount of data that is safe to remove
 if length(data_end) > max_data_removal
     warning(['There is more data without a closing time'...
-    'then expected. Please double check the datafile for problems'])
+    ' then expected. Please double check the datafile for problems'])
 end
+
 date_time(data_end)=[]; %remove data
-ax(data_end,:)=[];
-ay(data_end,:)=[];
-az(data_end,:)=[];
-gx(data_end,:)=[];
-gy(data_end,:)=[];
-gz(data_end,:)=[];
+accel(data_end,:)=[];
+gyro(data_end,:)=[];
 
 %% Remove Blank Rows
 
 %get rid off all bank rows in accel and gyro
-not_data=isnan(ax(1:end));
-ax(not_data,:)=[];
-ay(not_data,:)=[];
-az(not_data,:)=[];
-gx(not_data,:)=[];
-gy(not_data,:)=[];
-gz(not_data,:)=[];
+not_data=isnan(accel(:,1));
+accel(not_data,:)=[];
+gyro(not_data,:)=[];
 
 %remove unneeded time stamps, this makes accel/gyro the same length as
 %date_time. The removed times corosponed to when the RTC wrote the time to
 %the SD, this does not occure simotanusly with any accel/gyro read
-date_time(not_data,:)=[];
+date_time(not_data)=[];
 end
