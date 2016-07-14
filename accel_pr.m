@@ -1,4 +1,4 @@
-function [ pitch, roll ] = accel_pr( x, y, z )
+function [ pitch, roll ] = accel_pr( xyz )
 %ACCEL_PR Get pitch and roll from the accelerometer
 %   This uses filtering and a bit of trig to get an approximation
 %   of the pitch and roll from accelerometer inputs x, y, and z.
@@ -10,8 +10,12 @@ function [ pitch, roll ] = accel_pr( x, y, z )
 
 % Stolen from our accelerometry paper (Eqn. 25)
 % Reordering of coordinates, inverting pitch intentional
-roll  = -rad2deg(atan2(x, z));
-pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
+
+% roll  = -rad2deg(atan2(x, z));
+roll  = -rad2deg(atan2(xyz(:,1), xyz(:,3)));
+
+% pitch = rad2deg(atan2(y, sqrt(x.^2 + z.^2)));
+pitch = rad2deg(atan2(xyz(:,2), sqrt(xyz(:,1).^2 +xyz(:,3).^2)));
 
 % Attempted workaround from the same paper (Eqn. 37)
 % that tries to avoid gimbal lock

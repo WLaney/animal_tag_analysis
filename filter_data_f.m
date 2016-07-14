@@ -3,24 +3,19 @@ function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data
 dt = 1/12; %sample period
 %% Import Data
 % Real-World Data
-[ax,ay,az,gx,gy,gz,date_time,temp,pressure,bias] = ...
-   import_tag_gyro2(filename);
+[accel,gyro,date_time,temp,pressure] = import_tag(filename);
 
 %% Get pitch and roll from both sensors
 % Accelerometer
-x_f = ax; % - brick_wall(ax, dt);
-y_f = ay; % - brick_wall(ay, dt);
-z_f = az; % - brick_wall(az, dt);
-[a_pitch, a_roll] = accel_pr(x_f, y_f, z_f);
+xyz_f=accel;
+[a_pitch, a_roll] = accel_pr(xyz_f);
 a_pitch = unwrap_angles(a_pitch);
 a_roll  = unwrap_angles(a_roll);
 
 % Gyroscope
-gx_d = gx .* dt;
-gy_d = gy .* dt;
-gz_d = gz .* dt;
-g_pitch = cumsum(gx_d, 1);
-g_roll  = cumsum(gy_d, 1);
+gyro_d = gyro .* dt;
+g_pitch = cumsum(gyro_d(:,1), 1);
+g_roll  = cumsum(gyro_d(:,2), 1);
 
 % %% Combine Data with Complementary Filter
 % A Complementary filter is a lot easier to implement than a Kalman filter
@@ -46,8 +41,8 @@ g_roll  = cumsum(gy_d, 1);
 % end
 
 %% Combine Data with Kalman Filter
-comb_pitch = kalman_ag(a_pitch, gx, dt);
-comb_roll  = kalman_ag(a_roll, gy,  dt);
+comb_pitch = kalman_ag(a_pitch, gyro(:,1), dt);
+comb_roll  = kalman_ag(a_roll, gyro(:,2),  dt);
 
 %% Remove Gravity, Rotate
 
@@ -57,20 +52,20 @@ rr = deg2rad(comb_roll);
 cp = cos(rp);
 gravity = [-sin(rp), cp.*sin(rr), cp.*cos(rr)];
 %add check that this magnitude is 1
-linear_accel = [ax, ay, az] - gravity;
+linear_accel = accel - gravity;
 
 %% Here's a Bunch of Graphs
 figure(1);
 % Accel
 subplot(3, 2, 1);
-plot(date_time, [ax,ay,az]);
+plot(date_time, accel);
 ylabel('Acc. (g''s)');
 axis([-inf, inf, -8, 8]);
 legend('x', 'y', 'z');
 title('Accelerometer');
 % Gyro
 subplot(3, 2, 2);
-plot(date_time, [gx,gy,gz]);
+plot(date_time, gyro);
 ylabel('Ang. Vel (dps)');
 legend('x', 'y', 'z');
 title('Gyroscope');
@@ -96,7 +91,7 @@ brush on
 % figure(2);
 % % Accel
 % subplot(3, 1, 1);
-% plot(date_time, [ax,ay,az]);
+% plot(date_time, [accel]);
 % ylabel('Acc. (g''s)');
 % axis([-inf, inf, -8, 8]);
 % legend('x', 'y', 'z');

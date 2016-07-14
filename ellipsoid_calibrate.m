@@ -4,12 +4,12 @@
 % From there, we can figure out the biases, scale errors, etc. of
 % our accelerometer.
 
-[x,y,z,~,~,~,~,~,~] = import_tag_gyro2('accel_calibration.txt');
+[accel,~,~,~,~] = import_tag('accel_calibration.txt');
 
 % x = ax(36:(end-36));
 % y = ay(36:(end-36));
 % z = az(36:(end-36));
-[center, radii, evecs, v, chi2] = ellipsoid_fit([x y z]);
+[center, radii, evecs, v, chi2] = ellipsoid_fit(accel);
 
 % Stolen shamelessly from test_ellipsoid_fit.m
 fprintf( 'Ellipsoid center: %.5g %.5g %.5g\n', center );
@@ -24,12 +24,12 @@ fprintf( '\n' );
 
 % draw data
 figure,
-plot3( x, y, z, '.r' );
+plot3( accel(:,1), accel(:,2), accel(:,3), '.r' );
 hold on;
 
 %draw fit
-mind = min( [ x y z ] );
-maxd = max( [ x y z ] );
+mind = min( accel );
+maxd = max( accel );
 nsteps = 50;
 step = ( maxd - mind ) / nsteps;
 [ x, y, z ] = meshgrid( linspace( mind(1) - step(1), maxd(1) + step(1), nsteps ), linspace( mind(2) - step(2), maxd(2) + step(2), nsteps ), linspace( mind(3) - step(3), maxd(3) + step(3), nsteps ) );

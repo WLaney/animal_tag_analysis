@@ -1,6 +1,6 @@
-[ax,ay,az,~,~,~,dt,~,~] = import_tag_gyro2('tests/slow-pitch360.txt');
+[accel,~,dt,~,~] = import_tag_gyro2('tests/slow-pitch360.txt');
 
-[ap, ar] = accel_pr(ax, ay, az);
+[ap, ar] = accel_pr(accel(:,1), accel(:,2), accel(:,3));
 % weird correction here
 nap = ap<0;
 ap(nap) = ap(nap) * -1;
