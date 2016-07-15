@@ -7,10 +7,10 @@ function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filen
 %   of short is false
 
 %% Initialize variables.
-
+tic
 delimiter = ',';
 startRow = 2;
-endRow = Inf;
+endRow = inf;
 if nargin < 2 %check if short info was provided, if it was not make it false
     short=false;
 end
@@ -158,7 +158,7 @@ data_end=isnat(date_time); %find uninterpolated data
 
 %we should not have to remove very many data points, if we do there is
 %probably a problem with the data
-max_data_removal= 150; %the max amount of data that is safe to remove
+max_data_removal= 200; %the max amount of data that is safe to remove
 if length(data_end) > max_data_removal
     warning(['There is more data without a closing time'...
     ' then expected. Please double check the datafile for problems'])
@@ -180,4 +180,5 @@ gyro(not_data,:)=[];
 %the SD, this does not occure simotanusly with any accel/gyro read
 date_time(not_data)=[];
 warning('Save workspace so you do not need to import the data again')
+toc
 end

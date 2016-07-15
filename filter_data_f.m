@@ -1,5 +1,5 @@
 function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(accel,gyro,date_time,pressure)
-
+tic
 dt = 1/12; %sample period
 
 %% Get pitch and roll from both sensors
@@ -51,39 +51,39 @@ gravity = [-sin(rp), cp.*sin(rr), cp.*cos(rr)];
 %add check that this magnitude is 1
 linear_accel = accel - gravity;
 
-%% Here's a Bunch of Graphs
-figure(1);
-% Accel
-subplot(3, 2, 1);
-plot(date_time, accel);
-ylabel('Acc. (g''s)');
-axis([-inf, inf, -8, 8]);
-legend('x', 'y', 'z');
-title('Accelerometer');
-% Gyro
-subplot(3, 2, 2);
-plot(date_time, gyro);
-ylabel('Ang. Vel (dps)');
-legend('x', 'y', 'z');
-title('Gyroscope');
-% Pitch
-subplot(3, 1, 2);
-hold on
-plot(date_time, [a_pitch,a_roll], ':');
-plot(date_time, [g_pitch,g_roll]);
-hold off
-ylabel('Deg');
-legend('A.Pitch', 'A.Roll', 'G.Pitch', 'G.Roll');
-title('Raw Pitch and Roll');
-
-% Filter (Complementary or Kalman)
-subplot(3, 1, 3);
-plot(date_time, [comb_pitch, comb_roll]);
-ylabel('Deg');
-legend('Pitch', 'Roll');
-title('P&R with Filter');
-
-brush on
+% %% Here's a Bunch of Graphs
+% figure(1);
+% % Accel
+% subplot(3, 2, 1);
+% plot(date_time, accel);
+% ylabel('Acc. (g''s)');
+% axis([-inf, inf, -8, 8]);
+% legend('x', 'y', 'z');
+% title('Accelerometer');
+% % Gyro
+% subplot(3, 2, 2);
+% plot(date_time, gyro);
+% ylabel('Ang. Vel (dps)');
+% legend('x', 'y', 'z');
+% title('Gyroscope');
+% % Pitch
+% subplot(3, 1, 2);
+% hold on
+% plot(date_time, [a_pitch,a_roll], ':');
+% plot(date_time, [g_pitch,g_roll]);
+% hold off
+% ylabel('Deg');
+% legend('A.Pitch', 'A.Roll', 'G.Pitch', 'G.Roll');
+% title('Raw Pitch and Roll');
+% 
+% % Filter (Complementary or Kalman)
+% subplot(3, 1, 3);
+% plot(date_time, [comb_pitch, comb_roll]);
+% ylabel('Deg');
+% legend('Pitch', 'Roll');
+% title('P&R with Filter');
+% 
+% brush on
 
 % figure(2);
 % % Accel
@@ -109,5 +109,5 @@ brush on
 % axis([-inf, inf, -8, 8]);
 % legend('x', 'y', 'z');
 % title('Linear Acceleration (der.)');
-
+toc
 end
