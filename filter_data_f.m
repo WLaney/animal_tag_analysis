@@ -1,9 +1,6 @@
-function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(filename)
+function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(accel,gyro,date_time,pressure)
 
 dt = 1/12; %sample period
-%% Import Data
-% Real-World Data
-[accel,gyro,date_time,temp,pressure] = import_tag(filename);
 
 %% Get pitch and roll from both sensors
 % Accelerometer
