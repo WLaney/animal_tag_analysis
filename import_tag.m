@@ -7,7 +7,7 @@ function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filen
 %   of short is false
 
 %% Initialize variables.
-tic
+
 delimiter = ',';
 startRow = 2;
 endRow = Inf;
@@ -179,5 +179,5 @@ gyro(not_data,:)=[];
 %date_time. The removed times corosponed to when the RTC wrote the time to
 %the SD, this does not occure simotanusly with any accel/gyro read
 date_time(not_data)=[];
-toc
+warning('Save workspace so you do not need to import the data again')
 end
