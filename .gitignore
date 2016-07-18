@@ -12,3 +12,6 @@ octave-workspace
 
 # text files
 # *.txt
+
+# Big Data Files
+animal_tag_analysis/data/esl_accel/big_data
