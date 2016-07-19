@@ -22,5 +22,7 @@ while true
    end
 end
 
+% why is there no str2int? Did I just not look?
+accel = int16(accel);
 fclose(fp);
 end
