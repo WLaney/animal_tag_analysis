@@ -10,8 +10,6 @@ slprj/
 # Session info
 octave-workspace
 
-# text files
-# *.txt
-
-# Big Data Files
+# Big data folders
 data/esl_accel/big_data
+data/sharkduino
