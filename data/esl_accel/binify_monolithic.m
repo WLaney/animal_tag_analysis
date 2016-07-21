@@ -7,8 +7,9 @@ function [ indices ] = binify_monolithic( arr, size, edge_size )
 %                        1, size   + edge_size ;
 %   size   - edge_size + 1, size*2 + edge_size ; 
 % size * 2 - edge_size + 1, size*3 + edge_size ; ...
-
+%
 % [size * (c-1), size*c + edge_size]
+
 il = floor(length(arr)/size);
 indices = int64(zeros(il, 2));
 indices(1,:) = [1, size + edge_size];
