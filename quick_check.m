@@ -2,6 +2,12 @@ function [  ] = quick_check( accel, gyro, date_time )
 %make plots of raw XYZ acceration, angular velocity, and acceration
 %magnitude. This is for inital data intgerty checks
 
+%check that date_time is in order
+time_in_order=issorted(date_time);
+if time_in_order == 0
+    error('date times are not in order')
+end
+
 %X Y Z raw accel data
 figure(1)
 subplot(3,1,1)
