@@ -1,0 +1,9 @@
+Accelerometer A was taken off at 23:00 on July 1.
+Accelerometer B was taken off at 13:35 on June 30.
+Accelerometer C was takes off at 17:00 on June 28.
+
+--
+(all values are approximate; based on datetime stamps)
+Accelerometer A was put on at 16:32 on June 25th.
+Accelerometer B was put on at 15:35 on June 29th.
+Accelerometer C was put on at 14:04 on June 25th.
