@@ -12,4 +12,4 @@ octave-workspace
 
 # Big data folders
 data/esl_accel/big_data/*
-data/sharkduino/*
+data/sharkduino_esl/*

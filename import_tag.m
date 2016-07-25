@@ -1,6 +1,6 @@
 function [accel,gyro,date_time,temp,pressure,date_time_short] = import_tag(filename, short)
-%IMPORTFILE Import numeric data from a text file as column vectors.
-%   [accel,gyro,DATE_TIME,TEMP,PRESSURE] = import_tag(FILENAME, short)
+%Import numeric data from a text file as column vectors.
+%   [accel,gyro,date_time,temp,pressure] = import_tag(filename, short)
 %   Reads data from text file FILENAME for the default selection. Short is
 %   an optional paramter that when set to true retuns temp, pressure, and
 %   date_time called date_time_short without blank rows. The default value

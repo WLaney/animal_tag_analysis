@@ -1,5 +1,6 @@
 function [date_time, comb_pitch, comb_roll, gravity, linear_accel] = filter_data_f(accel,gyro,date_time,pressure, dt)
 tic
+dt = 1/25; %sample period
 
 %% Get pitch and roll from both sensors
 % Accelerometer
